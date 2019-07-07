@@ -54,7 +54,7 @@ void doublelinktable_push(DL *head,DL *new){
   current->next=new;
   new->prev=current;
 }
-enum bool doublelinktable_delete(DL *head,int data){
+enum my_bool doublelinktable_delete(DL *head,int data){
   DL *current=head;
   while(current->next != NULL){
     current=current->next;
@@ -67,9 +67,9 @@ enum bool doublelinktable_delete(DL *head,int data){
         current->next->prev=current->prev;
         free(current);
       }
-      return true;
+      return my_true;
     }
   }
   printf("delete data : %d failed ! no have link node !\n",data);
-  return false;
+  return my_false;
 }

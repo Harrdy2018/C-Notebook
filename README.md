@@ -4,3 +4,4 @@
 * [线性表的实现](./SequenceList)
 * [单链表的实现](./SingleLinkTable)
 * [双链表的实现](./DoubleLinkTable)
+* [排序](./Sort)

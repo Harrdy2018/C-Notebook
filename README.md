@@ -18,4 +18,6 @@
   git checkout -b base
   如果在新分支上新建文件，你现在处于暂存区，只有在新分支上add,commit之后，这个文件才会到base分支上去；
   master分支只可以看到master分支的东西，其他分支可以看到master和自己分支上的东西。
+  将创建的本地的base分支推送到origin
+  git push origin base 
 ```

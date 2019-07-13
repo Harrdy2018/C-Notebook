@@ -32,16 +32,19 @@ value    weight  C={0  1   2   3   4   5   6   7   8   9   10}
     二是，那好吧，我装着试一试，maxValue[5-1][8-weight[5]]+value[5]=9+6=15；
     取两个子问题的最大值即可。
 递推公式：
-maxValue[row][col]=0                                     if row=0 or col=0
-//既然你单独都装不进来，那好，不要你了
-maxValue[row][col]=maxValue[row-1][col]                  if weight[row]>col
-//你单独一个可以装进来，那好，尝试一下吧
-  //我不装你试试，可能价值大呢      
-  int a=maxValue[row-1][col]                             if weight[row]<=col
-  //算了，我还是试着装下你吧，万一呢？
-  int b=maxValue[row-1][col-weight[row]]+value[row]
-  //你们两比比吧，我取最大的
-  maxValue[row][col]=Max{a,b};
+if row=0 or col=0
+    maxValue[row][col]=0                                     
+if weight[row]>col
+    //既然你单独都装不进来，那好，不要你了
+    maxValue[row][col]=maxValue[row-1][col]    
+if weight[row]<=col              
+    //你单独一个可以装进来，那好，尝试一下吧
+    //我不装你试试，可能价值大呢      
+    int a=maxValue[row-1][col]                             
+    //算了，我还是试着装下你吧，万一呢？
+    int b=maxValue[row-1][col-weight[row]]+value[row]
+    //你们两比比吧，我取最大的
+    maxValue[row][col]=Max{a,b};
 value    weight  C={0  1   2   3   4   5   6   7   8   9   10}
   0        0       0   0   0   0   0   0   0   0   0   0   0
   6        4       0   0   0   0   6   6   6   6   6   6   6

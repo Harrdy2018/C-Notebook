@@ -6,6 +6,7 @@
 * [单链表的实现](./SingleLinkTable)
 * [双链表的实现](./DoubleLinkTable)
 * [排序](./Sort)
+* [背包问题](./knapsack)
 ### 基础进阶
 * [遍历二维数组](./Advanced/a.md)
 ### Git知识点

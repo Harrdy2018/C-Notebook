@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 #define N 5  //商品个数
 #define C 10 //背包容量

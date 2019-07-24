@@ -6,3 +6,19 @@
 * [单链表的实现](./SingleLinkTable)
 * [双链表的实现](./DoubleLinkTable)
 * [排序](./Sort)
+* [背包问题](./knapsack)
+### 基础进阶
+* [c语言进阶知识点](./Advanced)
+### Git知识点
+```
+本地仓和远程仓现在是同步的，我在本地仓删除base分支，怎么同步到远程仓去?
+  git checkout master
+  git branch --delete base
+  git push origin :base
+本地仓和远程仓现在是同步的，我在本地仓创建base分支，怎么同步到远程仓去?
+  git checkout -b base
+  如果在新分支上新建、编辑文件，你现在处于暂存区，只有在新分支上add,commit之后，这个文件才会到base分支上去；
+  master分支只可以看到master分支的东西，其他分支可以看到master和自己分支上的东西。
+  将创建的本地的base分支推送到origin
+  git push origin base 
+```

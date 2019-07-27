@@ -12,6 +12,7 @@ typedef struct BiTNode{
   TElemType data;
   struct BiTNode *lchild,*rchild;
 }BiTNode,*BiTree;
+void TreeInit(BiTNode *root);
 BiTNode *createNode(TElemType data){
   BiTNode *node=(BiTNode *)malloc(sizeof(BiTNode));
   node->data=data;
@@ -24,6 +25,38 @@ void push(BiTNode *parent,BiTNode *child,enum myBool isRight){
     parent->rchild=child;
   }else{
     parent->lchild=child;
+  }
+}
+/**
+ * 初始化空二叉树
+ */
+void TreeInit(BiTNode *root){
+  root=NULL;
+}
+/**
+ * 释放二叉树中的所有结点
+ */
+void ClearBTree(BiTNode *root){
+  if(root != NULL){
+    ClearBTree(root->lchild);
+    ClearBTree(root->rchild);
+    free(root);
+    root=NULL;
+  }
+}
+/**
+ * 计算二叉树的深度
+ */
+int BTreeDepth(BiTNode *root){
+  if(root == NULL){
+    return 0;
+  }else{
+    int depl=BTreeDepth(root->lchild);
+    int depr=BTreeDepth(root->rchild);
+    if(depl>depr){
+      return depl+1;
+    }
+    return depr+1;
   }
 }
 /**
@@ -89,6 +122,7 @@ void PostOrderTraverse(BiTree T){
 }
 /**
  * 前序输入创建二叉树
+ * AB#D##C##
  * 为什么要使用二级指针?
  * 首先我创建一个为NULL的root结点的指针newRoot BiTree newRoot=NULL
  * 为了改变newRoot的值，我必须传它的引用，也就是地址
@@ -104,10 +138,30 @@ void CreateBiTree(BiTree *T){
       printf("merroy malloc failed");
     }
     (*T)->data=ch;
-    (*T)->lchild=NULL;
-    (*T)->rchild=NULL;
     CreateBiTree(&(*T)->lchild);
     CreateBiTree(&(*T)->rchild);
+  }
+}
+/**
+ * 后序遍历创建二叉树
+ * ###DB##CA
+ * 考虑到找到根节点会很快的完成任务，于是乎root right left遍历，发现是AC##BD###
+ * 恰好是逆序的
+ */
+static int length=9;
+void CreateBiTree_Post(BiTree *T,char array[]){
+  char ch=array[length-1];
+  length--;
+   if(ch=='#'){
+    *T=NULL;
+  }else{
+    *T=(BiTree)malloc(sizeof(BiTNode));
+    if(*T== NULL){
+      printf("merroy malloc failed");
+    }
+    (*T)->data=ch;
+    CreateBiTree_Post(&(*T)->rchild,array);
+    CreateBiTree_Post(&(*T)->lchild,array);
   }
 }
 int main(){
@@ -118,8 +172,13 @@ int main(){
   printf("\n");
   PostOrderTraverse(root);
   printf("\n");
-  BiTree newRoot=NULL;
-  CreateBiTree(&newRoot);
-  PreOrderTraverse(newRoot);
+  //BiTree newRoot=NULL;
+  //CreateBiTree(&newRoot);
+  //PreOrderTraverse(newRoot);
+  BiTree nnRoot;
+  TreeInit(nnRoot);
+  char aa[]={'#','#','#','D','B','#','#','C','A'};
+  CreateBiTree_Post(&nnRoot,aa);
+  PreOrderTraverse(nnRoot);
   return 0;
 }

@@ -7,6 +7,7 @@
 * [双链表的实现](./DoubleLinkTable)
 * [排序](./Sort)
 * [背包问题](./knapsack)
+* [树](./tree)
 ### 基础进阶
 * [c语言进阶知识点](./Advanced)
 ### Git知识点

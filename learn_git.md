@@ -41,7 +41,7 @@ git commit -m "revert a haha" 这样会在git log后面新加一个commit记录
 * git pull=git fetch origin + git merge
 ```
 如果更新成功，更新添加的内容自动加到本地仓里面去了，不存在修改的问题。
-
+如果有冲突，先更改冲突的文件，此时文件会处于修改状态，需要add+commit，才算最后的更新
 ```
 ### 其他问题
 ```

@@ -2,6 +2,7 @@
 ### 状态符号
 * 红色?? 新建的文件。表示当前文件在工作区，还没有add进暂存区
 * 红色M  表示暂存区的文件已经修改了
+* 红色UU 表示工作区冲突的文件，即都修改了的文件
 * 淡蓝色M 表示暂存区修改的文件已经进行add操作了
 * 淡蓝色A 新建的文件已经进行add操作进了暂存区
 ***
@@ -41,8 +42,36 @@ git commit -m "revert a haha" 这样会在git log后面新加一个commit记录
 * git pull=git fetch origin + git merge
 ```
 如果更新成功，更新添加的内容自动加到本地仓里面去了，不存在修改的问题。
-如果有冲突，先更改冲突的文件，此时文件会处于修改状态，需要add+commit，才算最后的更新
+
+-----------产生冲突的条件，修改了同一文件的同一部分-------------------
+如果有冲突，在工作区会出现文件状态为红色UU的冲突文件，这个就是冲突文件，他的意思是both modified
+先根据情况更改冲突的文件，
+git add *
+文件状态变为淡蓝色的M
+git commit -m "fix conflict"
+此时更新并解决冲突才算完成
+
+-----------git自己可以解决的冲突，修改了同一文件的不同一部分-------------------
+解决方法git pull=======git fetch origin+git merge
+第一步：git fetch origin  可以正常的
+第二步：git merge         弹出要你写你为什么要merge
+*****************************************************************************
+# Please enter a commit message to explain why this merge is necessary,
+# especially if it merges an updated upstream into a topic branch.
+#
+# Lines starting with '#' will be ignored, and an empty message aborts
+# the commit.
+************************************************************************************
+第三步：
+Auto-merging 冲突文件
+Merge made by the 'recursive' strategy.
+最后状态查看：git log
+相当于提交了两次，第一次提一个update 冲突文件(远程仓代码更新到工作区)，第二个进行自动的merge
 ```
+### 查看提交历史
+* git log
+* git log -2     加上 -2 来仅显示最近两次提交
+* git log -p -2  一个常用的选项是 -p，用来显示每次提交的内容差异。 你也可以加上 -2 来仅显示最近两次提交
 ### 其他问题
 ```
 本地仓和远程仓现在是同步的，我在本地仓删除base分支，怎么同步到远程仓去?

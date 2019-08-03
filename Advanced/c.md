@@ -74,4 +74,48 @@ int main ()
 ```
 ### 结构体数组
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//定义结构体数组和变量
+struct stu{
+  char *name;
+  int num;
+  int age;
+  char group;
+  float score;
+}class[5];//一个班级有5名学生
+//定义+变量+初始化
+struct stuA{
+    char *name;  //姓名
+    int num;  //学号
+    int age;  //年龄
+    char group;  //所在小组 
+    float score;  //成绩
+}classA[5] = {
+    {"Li ping", 5, 18, 'C', 145.0},
+    {"Zhang ping", 4, 19, 'A', 130.5},
+    {"He fang", 1, 18, 'A', 148.5},
+    {"Cheng ling", 2, 17, 'F', 139.0},
+    {"Wang ming", 3, 17, 'B', 144.5}
+};
+//定义+变量+初始化+不指明数组长度
+struct stuC{
+    char *name;  //姓名
+    int num;  //学号
+    int age;  //年龄
+    char group;  //所在小组 
+    float score;  //成绩
+}classC[] = {
+    {"Li ping", 5, 18, 'C', 145.0},
+    {"Zhang ping", 4, 19, 'A', 130.5},
+    {"He fang", 1, 18, 'A', 148.5},
+    {"Cheng ling", 2, 17, 'F', 139.0},
+    {"Wang ming", 3, 17, 'B', 144.5}
+};
+int main ()
+{
+  printf("struct array");
+  return(0);
+}
 ```

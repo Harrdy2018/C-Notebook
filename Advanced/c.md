@@ -119,3 +119,72 @@ int main ()
   return(0);
 }
 ```
+### 结构体指针
+* 结构体指针实例
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct stu{
+  char *name;
+}stu1={"lukang"};
+int main ()
+{
+  struct stu *p=&stu1;
+  printf("%s\n",p->name);
+  return 0;
+}
+```
+* 定义结构体的同时，定义结构体指针
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct stu{
+  char *name;
+}stu1={"lukang"},*p=&stu1;
+int main ()
+{
+  printf("%s\n",p->name);
+  return 0;
+}
+```
+* 只是简单的将结构体的首地址赋值给一个指针
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct stu{
+  char *name;
+}class[2]={
+  {"lukang"},
+  {"hewen"}
+},*p=class;
+int main ()
+{
+  int len=sizeof(struct stu);
+  int lenw=sizeof(class);
+  printf("%d %d\n",len,lenw);
+  printf("%s %s\n",p->name,(p+1)->name);
+  return 0;
+}
+```
+* 结构体指针数组
+```
+struct stu *p[2]={&stu1,&stu2};
+本质上是一个数组，数组里面装的是结构体的地址，为什么呢因为，*p[2],这个*是与后面结合，即*p[2]===*(p[2])
+```
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct stu{
+  char *name;
+}stu1={"lukang"},stu2={"hewen"};
+int main ()
+{
+  struct stu *p[2]={&stu1,&stu2};
+  printf("%s %s\n",p[0]->name,p[1]->name);
+  return 0;
+}
+```

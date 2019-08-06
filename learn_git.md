@@ -72,6 +72,14 @@ Merge made by the 'recursive' strategy.
 * git log
 * git log -2     加上 -2 来仅显示最近两次提交
 * git log -p -2  一个常用的选项是 -p，用来显示每次提交的内容差异。 你也可以加上 -2 来仅显示最近两次提交
+### 比较区别
+* 比较工作区与HEAD的差别 git diff
+* 比较暂存区与HEAD的差别
+```
+git diff --cached 
+equals to
+git diff --cached HEAD
+```
 ### 其他问题
 ```
 本地仓和远程仓现在是同步的，我在本地仓删除base分支，怎么同步到远程仓去?

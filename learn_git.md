@@ -20,6 +20,11 @@ git reset --soft 版本号
 git reset --hard 版本号
 回退到某个版本。但是错误提交的版本以及，错误版本提交后修改的文件都会被冲刷掉，错误版本之后的新建的文件没事
 ```
+* 撤销被添加到暂存区的改动
+```
+git reset 撤销所有
+git reset filename 撤销某一个
+```
 * git push origin --force
 ```
 强推，什么叫强推？

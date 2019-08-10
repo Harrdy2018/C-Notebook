@@ -132,8 +132,70 @@ typedef struct {
 ```  
 * [希尔排序](./ShellSort.c)
 ```c
+void ShellSort(int arr[],int len){
+  int size=len-1;
+  int increment=size;
+  do{
+    increment=increment/3+1;
+    for(int i=increment+1;i<len;i++){
+      if(arr[i]<arr[i-increment]){
+        arr[0]=arr[i];
+        int j;
+        for(j=i-increment;j>0&&arr[0]<arr[j];j=j-increment){
+          arr[j+increment]=arr[j];
+        }
+        arr[j+increment]=arr[0];
+      }
+    }
+  }while(increment>1);
+}
 ```
+* 希尔排序思路
 ```
+将数组int arr[10]={0,9,1,5,8,3,7,4,6,2};带入，其中位置0作为哨兵
+增量increment=9;
+loop
+  increment=4
+  for loop(i=5~9)
+    arr[5]=3 arr[5-increment]=arr[1]=9
+    保存小值arr[0]=3 int arr[10]={3,9,1,5,8,3,7,4,6,2}
+    j=1时，有arr[0]<arr[1] int arr[10]={3,9,1,5,8,9,7,4,6,2}
+    j=1-4没有了
+    将哨兵附上int arr[10]={3,3,1,5,8,9,7,4,6,2}
+
+    i=6;
+    arr[6]=7 arr[2]=1什么也不做
+    int arr[10]={3,3,1,5,8,9,7,4,6,2}
+
+    i=7;
+    arr[7]=4 arr[3]=5
+    保存小值arr[0]=4 int arr[10]={4,3,1,5,8,3,7,4,6,2}
+    j=3时，有arr[0]<arr[3] int arr[10]={4,3,1,5,8,9,7,5,6,2}
+    j=3-4没有了
+    将哨兵附上int arr[10]={4,3,1,4,8,9,7,5,6,2}
+
+    i=8;
+    arr[8]=6 arr[4]=8
+    保存小值arr[0]=6 int arr[10]={4,3,1,4,8,9,7,5,6,2}
+    j=4时，有arr[0]<arr[4] int arr[10]={6,3,1,4,8,9,7,5,8,2}
+    j=4-4但是不小于
+    int arr[10]={6,3,1,4,6,9,7,5,8,2}
+
+    i=9;
+    arr[9]=2 arr[5]=9
+    保存小值arr[0]=2 int arr[10]={2,3,1,4,6,9,7,5,8,2}
+    j=5时，有arr[0]<arr[5] int arr[10]={2,3,1,4,6,9,7,5,8,9}
+    j=5-4时,也有 int arr[10]={2,3,1,4,6,3,7,5,8,9}
+    int arr[10]={2,2,1,4,6,3,7,5,8,9}
+  
+  increment=2
+    i=5时需要交换 int arr[10]={3,2,1,3,6,4,7,5,8,9}
+  increment=1
+    i=2 交换 int arr[10]={1,1,2,3,6,4,7,5,8,9}
+    i=5 交换 int arr[10]={4,1,2,3,4,6,7,5,8,9}
+    i=7 交换 int arr[10]={5,1,2,3,4,6,7,7,8,9}
+             int arr[10]={5,1,2,3,4,6,6,7,8,9}
+             int arr[10]={5,1,2,3,4,5,6,7,8,9}
 ```
 *** 
 ### 归并排序类

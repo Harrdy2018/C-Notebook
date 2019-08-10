@@ -21,8 +21,8 @@ void ShellSort(int arr[],int len){
       }
     }
   }while(increment>1);
-
 }
+
 int main(){
   int arr[10]={0,9,1,5,8,3,7,4,6,2};
   int len=10;

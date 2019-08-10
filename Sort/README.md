@@ -1,11 +1,69 @@
 ## 排序
-* 冒泡排序
+### 交换排序类
+* [冒泡排序](./BubbleSort.c)
 ```
 冒泡排序时间复杂度分析：
 如果要排序的表本身是有序的，那么我们比较次数，n-1次比较，时间复杂度o[n];
 最坏的情况，逆序，此时需要比较1+2+3+4+...+(n-1)=n(n-1)/2次,时间复杂度o[n^2]
 ```
-* 选择排序算法
+* [快速排序](./QuickSort.c)
+```c
+/**
+ * 将*left交换到数组的枢轴，使得左边都比他小，右边都比他大
+ */
+int *FindPivot(int *left,int *right){
+  while(left<right){
+    while(*left<*right){
+      right--;
+    }
+    swap(&(*left),&(*right));
+    while(*left<*right){
+      left++;
+    }
+    swap(&(*left),&(*right));
+  }
+  return left;
+}
+```
+```
+我们将数组int arr[9]={50,10,90,30,70,40,80,60,20};带入；
+进入外面的while循环：
+    此时*left=50 *right=20;不满足；
+    交换 int arr[9]={20,10,90,30,70,40,80,60,50}
+    此时*left=20 *right=50;满足；
+        left++,此时*left=10,依然满足
+        left++,此时*left=90,不满足
+    交换int arr[9]={20,10,50,30,70,40,80,60,90}
+
+    由于现在*left=50 *right=90,没走完一趟，继续
+
+    此时*left=50 *right=90;满足；
+      right--;,此时*right=60；满足；
+      right--;此时*right=80;满足；
+      right--;此时*right=40；不满足；
+    交换int arr[9]={20,10,40,30,70,50,80,60,90}
+    此时*left=40,*right=50;;满足；
+      left++;此时*left=30;满足；
+      left++;此时*left=70;不满足；
+    交换int arr[9]={20,10,40,30,50,70,80,60,90}
+
+    由于现在*left=50 *right=70,没走完一趟，继续
+
+    此时*left=50,*right=70满足;
+      right--;注意此时*left=*right=50;不满足
+    交换int arr[9]={20,10,40,30,50,70,80,60,90}
+    此时*left=*right=50;依然不满足
+    交换int arr[9]={20,10,40,30,50,70,80,60,90}
+
+    结束循环
+
+函数FindPivot的作用：
+    使*left成为pivot,并返回他的地址;
+    在最外面的循环里面，每循环一次，最终left指针依然指向起始值；
+    循环结束的时候，left指针和right指针相遇，同时指向起始值；
+```
+### 选择排序类
+* [简单选择排序](./SelectSort.c)
 ```
 n个数通过n-1次的比较;从后面记录中选择最小再和前面的交换；
 1 9 10 5 8 3 7 4 6 2
@@ -22,7 +80,15 @@ n个数通过n-1次的比较;从后面记录中选择最小再和前面的交换
 对于交换次数而言，当最好的时候，为0,最差的时候，交换次数n-1次，最终排序时间为比较与交换的总和，时间复杂度为o[n^2]；
 排序性能上略优于冒泡排序；
 ```
-* 直接插入排序算法
+* [堆排序](./HeapSort.c)
+```
+先构造一个大顶堆，或者小顶堆；
+loop
+  交换两端元素；
+  继续构建堆
+```
+### 插入排序类
+* [直接插入排序](./StraightInsertionSort.c)
 ```c
 typedef struct {
   int r[MAXSIZE+1];//用于储存排序数组，r[0]用作哨兵或临时变量
@@ -58,12 +124,39 @@ typedef struct {
                 5先移动到哨兵的位置，6再移动到5的位置，哨兵再移动一次
 根据概率相同的原则：若待排序对象序列中出现各种可能排列的概率相同，则可取最好情况和最坏情况的平均情况。
 则平均比较和平均移动次数约为n^2/4,直接排序算法的时间复杂度为o[n^2];
-```   
-***       
-* 堆排序
+```  
+* [希尔排序](./ShellSort.c)
+```c
 ```
-先构造一个大顶堆，或者小顶堆；
-loop
-  交换两端元素；
-  继续构建堆
+```
+```
+*** 
+### 归并排序类
+* [归并排序](./MergingSort.c)
+```c
+int *MSort(int arr[],int start,int end){
+  int size=end-start+1;
+  int *res=(int *)malloc(size*sizeof(int));
+  memset(res,0,size*sizeof(int));
+  if(start==end){
+    res[0]=arr[start];
+  }else{
+    int mid=(end+start)/2;
+    int *a=MSort(arr,start,mid);
+    int *b=MSort(arr,mid+1,end);
+    Merge(a,mid-start+1,b,end-mid,res);
+    PrintfArr(res,size);
+  }
+  return res;
+}
+```
+* 归并排序思路(递归实现)
+```
+sort(50,10,90,30)===>sort(50,10)===>sort(50)---由于start=end故返回res1={50}
+                                    sort(10)---由于start=end故返回res2={10}
+                                    merge------合并返回res3={10,50};
+                    sort(90,30)===>sort(90)----由于start=end故返回res4={90}
+                                   sort(30)----由于start=end故返回res5={30}
+                                   merge-------合并返回res6={30,90};
+                    merge----------------------合并返回res7={10,30,50,90};
 ```

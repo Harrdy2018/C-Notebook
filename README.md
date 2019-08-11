@@ -14,3 +14,5 @@
 * [Git知识点](./learn_git.md)
 ### LeetCode
 * [125--验证回文串](./LeetCode/125--验证回文串.md)
+### Linux
+* [硬链接和软链接](./Linux/a.md)

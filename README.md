@@ -13,6 +13,6 @@
 * [c语言进阶知识点](./Advanced)
 * [Git知识点](./learn_git.md)
 ### LeetCode
-* [125--验证回文串](./LeetCode/125--验证回文串.md)
+* [LeetCode 刷题](./LeetCode)
 ### Linux
 * [Linux 知识](./Linux)

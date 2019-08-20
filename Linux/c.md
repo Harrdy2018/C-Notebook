@@ -90,10 +90,11 @@ set termencoding=utf-8
 set encoding=utf-8
 set number
 set cursorline
-set mouse=a
-set selection=exclusive
-set selectmode=mouse,key
 set showmatch
+set showmode
+set showcmd
+set t_Co=256
+set relativenumber
 set hlsearch
 set incsearch
 set ignorecase
@@ -102,7 +103,6 @@ set shiftwidth=4
 set autoindent
 set expandtab
 set softtabstop=4
-set paste
 set listchars=tab:>-,trail:-
 set laststatus=2
 set ruler

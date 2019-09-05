@@ -1,20 +1,17 @@
 #include <stdio.h>
 #include "Stack.h"
 int main(void){
-    Stack stack;
-    printf("%p %d %d %d\n",&stack,sizeof(stack),stack.data[0],stack.top);
-    InitStack(&stack);
-    printf("%d\n",stack.top);
+    Stack *pStack=InitStack();
     int arr[]={1,2,3,4,5,6,7};
     for(int i=0;i<7;i++){
-        Push(&stack,arr[i]);
+        Push(pStack,arr[i]);
     }
-    TraverseStack(&stack);
-    while(!isEmpty(&stack)){
+    TraverseStack(pStack);
+    while(!isEmpty(pStack)){
         int e;
-        Pop(&stack,&e);
-        printf("%d\n",e);
-        TraverseStack(&stack);
+        Pop(pStack,&e);
+        printf("pop %d\n",e);
+        TraverseStack(pStack);
     }
     return 0;
 }

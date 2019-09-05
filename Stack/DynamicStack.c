@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Stack.h"
+#include "DynamicStack.h"
 /**
  * 初始化操作，建立一个空栈
 */
@@ -8,13 +8,14 @@ Stack *InitStack(){
     Stack *S=(Stack *)malloc(sizeof(Stack));
     S->data=(SElemType *)malloc(MAXSIZE*sizeof(SElemType));
     S->top=-1;
+    S->capacity=MAXSIZE;
     return S;
 }
 /**
  * 判满
 */
 my_bool isFull(Stack *S){
-    return S->top==MAXSIZE-1 ? my_true:my_false;
+    return S->top==S->capacity-1 ? my_true:my_false;
 }
 /**
  * 判空
@@ -28,7 +29,8 @@ my_bool isEmpty(Stack *S){
 */
 my_bool Push(Stack *S,SElemType ele){
     if(isFull(S)){
-        return my_false;
+        S->capacity=MAXSIZE+SIZEINCREMENT;
+        S->data=(SElemType *)realloc(S->data,(S->capacity)*sizeof(SElemType));
     }
     S->top++;
     S->data[S->top]=ele;

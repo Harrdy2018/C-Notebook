@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "DynamicStack.h"
+#include "Stack.h"
 int main(void){
     Stack *pStack=InitStack();
     printf("the capcity of stack is %d\n",pStack->capacity);

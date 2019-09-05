@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "DynamicStack.h"
+#include "Stack.h"
 /**
  * 初始化操作，建立一个空栈
 */

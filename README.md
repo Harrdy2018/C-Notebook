@@ -8,6 +8,7 @@
 * [排序](./Sort)
 * [背包问题](./knapsack)
 * [树](./tree)
+* [栈](./Stack)
 * [哈希表](./HashTable)
 ### 基础进阶
 * [c语言进阶知识点](./Advanced)

@@ -3,6 +3,7 @@ typedef int SElemType;
 typedef struct my_stack{
     SElemType *data;
     int top;         /*用于栈顶指针*/
+    int capacity;    /*栈的容量*/
 }Stack;
 typedef enum my_bool{
   my_false=0,my_true

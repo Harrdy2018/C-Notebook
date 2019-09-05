@@ -8,13 +8,14 @@ Stack *InitStack(){
     Stack *S=(Stack *)malloc(sizeof(Stack));
     S->data=(SElemType *)malloc(MAXSIZE*sizeof(SElemType));
     S->top=-1;
+    S->capacity=MAXSIZE;
     return S;
 }
 /**
  * 判满
 */
 my_bool isFull(Stack *S){
-    return S->top==MAXSIZE-1 ? my_true:my_false;
+    return S->top==S->capacity-1 ? my_true:my_false;
 }
 /**
  * 判空

@@ -1,3 +1,8 @@
+#ifndef LINKSTACK_H
+#define LINKSTACK_H
+
+#include <stdio.h>
+#include <stdlib.h>
 typedef int SElemType;
 typedef struct my_StackNode{
     SElemType data;
@@ -18,3 +23,6 @@ my_bool Pop(LinkStack *obj,SElemType *ele);
 void GetTop(LinkStack *obj,SElemType *ele);
 void TraverseLinkStack(LinkStack LS);
 int LinkStackLength(LinkStack *obj);
+void DestroyStack(LinkStack *obj);
+void ClearStack(LinkStack *obj);
+#endif

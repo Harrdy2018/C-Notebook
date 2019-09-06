@@ -1,4 +1,5 @@
+echo "正在执行的文件>>>"$1.c
 gcc -c Stack.c
-gcc -c main.c
-gcc -g Stack.o main.o -o main.exe && ./main.exe
-rm -rf Stack.o main.o main.exe
+gcc -c $1.c
+gcc -g Stack.o $1.o -o $1.exe && ./$1.exe
+rm -rf Stack.o $1.o $1.exe

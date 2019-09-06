@@ -1,6 +1,4 @@
 #include "Stack.h"
-#include <stdlib.h>
-#include <stdio.h>
 StackNode *CreateStackNode(SElemType ele){
     StackNode *node=(StackNode *)malloc(sizeof(StackNode));
     node->data=ele;
@@ -53,4 +51,22 @@ void TraverseLinkStack(LinkStack LS){
 }
 int LinkStackLength(LinkStack *obj){
     return obj->count;
+}
+void DestroyStack(LinkStack *obj){
+    ClearStack(obj);
+    free(obj);
+    if(obj != NULL){
+        obj=NULL;
+    }
+}
+void ClearStack(LinkStack *obj){
+    if(obj->top != NULL){
+        StackNode *current=obj->top;
+        obj->top=obj->top->next;
+        free(current);
+        if(current != NULL){
+            current=NULL;
+        }
+    }
+    obj->count=0;
 }

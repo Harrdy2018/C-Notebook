@@ -14,6 +14,8 @@ char LefttoRight(char ch){
         case '(': return ')';
         case '[': return ']';
         case '{': return '}';
+        //随便取个值吧！不然编不过
+        default : return '0';
     }
 }
 my_bool test(){

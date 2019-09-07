@@ -4,3 +4,4 @@
 ### 链栈--栈的链式存储结构
 ### 栈的经典运用
 * [四则运算的实现](./LinkStack/test.c)
+* [20--有效的括号](./LinkStack/balanced.c)

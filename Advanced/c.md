@@ -188,3 +188,18 @@ int main ()
   return 0;
 }
 ```
+* hikvison 选择题
+```c
+#include <stdio.h>
+struct c{
+    int x;
+    int y;
+}s[2]={2,3,4,7},k[2]={{2,3},{4,7}};
+int main(void)
+{
+    printf("hello world\n");
+    printf("%d %d %d %d\n",s[0].x,s[0].y,s[1].x,s[1].y);//2 3 4 7
+    printf("%d %d %d %d\n",k[0].x,k[0].y,k[1].x,k[1].y);//2 3 4 7
+	return 0;
+}
+```

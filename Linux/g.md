@@ -12,6 +12,24 @@ int main(){
     printf("%d\n",nj);//1232
 }
 ```
+* 网络编程运用
+```c
+#include <stdio.h>
+#include <string.h>
+typedef unsigned short int sa_family_t;
+#define __SOCKADDR_COMMON(sa_prefix) sa_family_t sa_prefix##family
+struct sockaddr_un{
+        __SOCKADDR_COMMON (sun_);
+        char sun_path[108];
+    };
+int main(){
+   struct sockaddr_un test;
+   test.sun_family=2;
+   //why?? test.sun_path="lukang";
+   strcpy(test.sun_path,"lukang");
+   printf("%d  %s\n",(&test)->sun_family,(&test)->sun_path);
+}
+```
 ### 空格 作用 连接操作符
 * 字符串形的宏参数连接成一个新的字符串
 ```c

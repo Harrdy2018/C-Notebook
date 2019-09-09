@@ -78,6 +78,24 @@ void main(void){
 	printf("%d\n",status);
 }
 ```
+### bzero()
+* Set N bytes of S to 0.
+* extern void bzero (void *__s, size_t __n) __THROW __nonnull ((1));
+```c
+#include <stdio.h>
+#include <string.h>
+void main(void){
+        printf("%d\n",'\0');//0
+        char str[]="Hello";
+        bzero(str,2);
+        int i=2;
+        while(str[i] != '\0'){
+                printf("%c\n",str[i]);
+                i++;
+        }
+        printf("%s\n",&str[2]);//llo
+}
+```
 ### 函数
 * socket()  /usr/include/sys/socket.h
 ```c

@@ -1,4 +1,12 @@
 ## 文件描述符
+* extern void perror (const char *__s);
+* Print a message describing the meaning of the value of errno
+```c
+#include <stdio.h>
+int main(){
+    perror("error");//error: No error
+}
+```
 * 对于socket文件描述符的取值范围和分配进行了探索
 ```
 在系统头文件posix_types.h中定义了文件描述符的最大数量1024，意味着文件描述符的取值范围是0~1023，

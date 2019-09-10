@@ -368,19 +368,25 @@ void main(void){
 
 	//listen
 	listen(server_sockfd,5);
+	/*
+	功能：accept函数从listen的已完成连接队列中返回下一个已完成连接, 也就是对端的套接字, 一个新的套接字
+	      当已完成连接队列的下一个完成连接是空, 那么accept函数将被阻塞.
+    定义：int accept(int sockfd, struct sockaddr *cliaddr, int* addrlen);
+	返回：调用成功时返回: 1. cliaddr: 客户进程的协议地址和地址大小 2. 新套接口描述符
+	*/
 
 	while(1){
 		char ch;
 		printf("server is waiting\n");
 		struct sockaddr_un client_address;
 		int client_len=sizeof(client_address);
-		int client_sockfd=accept(server_sockfd,(struct sockaddr *)&server_address,(socklen_t *)&client_len);
+		int accept_sockfd=accept(server_sockfd,(struct sockaddr *)&client_address,(socklen_t *)&client_len);
 		
-		read(client_sockfd,&ch,1);
+		read(accept_sockfd,&ch,1);
 		ch++;
 
-		write(client_sockfd,&ch,1);
-		close(client_sockfd);
+		write(accept_sockfd,&ch,1);
+		close(accept_sockfd);
 	}
 }
 ```
@@ -448,3 +454,12 @@ void main(void){
 }
 ```
 * gcc -g client.c -o client.o && ./client.o
+#### socket()和accept()返回的fd
+```
+一个客户端和一个服务端连接，双方socket产生各自的c_sock_fd和s_sock_fd；
+s_sock_fd进行bind和listen后，accept准备接受客户端的连接请求；
+c_sock_fd调用connect请求连接服务端；
+服务端接到请求产生accept_fd，届时accept_fd和c_sock_fd两个套接字可以通讯，而s_sock_fd则可以关闭；
+客户端关闭close（c_sock_fd）后，服务端关闭所有未关闭的fd，通讯彻底断开。
+ps：服务端的socket产生的套接字只是用来监听的，不能直接用于发送接收数据。
+```

@@ -348,48 +348,7 @@ typedef unsigned short int sa_family_t;
 #define _SS_SIZE 128
 ```
 ### 服务端
-* server.c
-```c
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <string.h>
-
-void main(void){
-	unlink("server_socket");
-	int server_sockfd=socket(AF_UNIX,SOCK_STREAM,0);
-
-	//bind
-	struct sockaddr_un server_address;
-	server_address.sun_family=AF_UNIX;
-	strcpy(server_address.sun_path,"server_socket");
-	bind(server_sockfd,(struct sockaddr *)&server_address,sizeof(server_address));
-
-	//listen
-	listen(server_sockfd,5);
-	/*
-	功能：accept函数从listen的已完成连接队列中返回下一个已完成连接, 也就是对端的套接字, 一个新的套接字
-	      当已完成连接队列的下一个完成连接是空, 那么accept函数将被阻塞.
-    定义：int accept(int sockfd, struct sockaddr *cliaddr, int* addrlen);
-	返回：调用成功时返回: 1. cliaddr: 客户进程的协议地址和地址大小 2. 新套接口描述符
-	*/
-
-	while(1){
-		char ch;
-		printf("server is waiting\n");
-		struct sockaddr_un client_address;
-		int client_len=sizeof(client_address);
-		int accept_sockfd=accept(server_sockfd,(struct sockaddr *)&client_address,(socklen_t *)&client_len);
-		
-		read(accept_sockfd,&ch,1);
-		ch++;
-
-		write(accept_sockfd,&ch,1);
-		close(accept_sockfd);
-	}
-}
-```
+* [server.c](./code/server.c)
 * gcc -g server.c -o server.o && ./server.o
 * 这时候表明服务端的socket进程监听和等待客户端的连接，使用ps命令可以看到当前的进程正在后台运行，并且处于休眠状态，因此它没有消耗CPU资源
 ```linux
@@ -422,37 +381,7 @@ harrdy    14786  0.0  0.0 112704   984 pts/2    S+   13:55   0:00 grep --color=a
   2454 ?        Sl     0:00 /usr/libexec/imsettings-daemon
 ```
 ### 客户端
-* client.c
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <string.h>
-
-void main(void){
-	//socket
-	int sockfd=socket(AF_UNIX,SOCK_STREAM,0);
-
-	//connect
-	struct sockaddr_un address;
-	address.sun_family=AF_UNIX;
-	strcpy(address.sun_path,"server_socket");
-	int result=connect(sockfd,(struct sockaddr *)&address,sizeof(address));
-	if(result==-1){
-		perror("oops:client1");
-		exit(1);
-	}
-	
-	char ch='A';
-	write(sockfd,&ch,1);
-	read(sockfd,&ch,1);
-	printf("char from server = %c \n",ch);
-	close(sockfd);
-	//exit #include <stdlib.h>
-	exit(0);
-}
-```
+* [client.c](./code/client.c)
 * gcc -g client.c -o client.o && ./client.o
 #### socket()和accept()返回的fd
 ```

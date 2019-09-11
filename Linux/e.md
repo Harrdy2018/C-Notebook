@@ -1,4 +1,7 @@
 ## Linux 网络编程
+### 搜索技巧
+* find . -name 'in.h'
+* grep -r 'struct in_addr'
 ### 进程间通信方式
 * 管道(pipe)(包括匿名管道和命名管道)
 * 信号(signal)
@@ -96,6 +99,25 @@ void main(void){
         printf("%s\n",&str[2]);//llo
 }
 ```
+### inet_addr()
+```c
+/* Convert Internet host address from numbers-and-dots notation in CP
+   into binary data in network byte order.  */
+extern in_addr_t inet_addr (const char *__cp) __THROW;
+/*in_addr_t-->uint32_t-->unsigned int*/
+/* arpa/inet.h */
+```
+### struct in_addr{}
+* 网络字节序的结构体
+```c
+/* Internet address.  */
+typedef uint32_t in_addr_t;
+struct in_addr
+  {
+    in_addr_t s_addr;
+  };
+/* netinet/in.h */
+```
 ### 函数
 * socket()  /usr/include/sys/socket.h
 ```c
@@ -152,43 +174,6 @@ struct sockaddr
     char sa_data[14];           /* Address data.  */
   };
 ```
-* example
-```c
-#include <stdio.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <netinet/in.h>
-#define MYPORT 3490
-/**
- * Structure describing an Internet socket address
- * define include <netinet/in.h>
- * sin_port that is port number
- * sin_addr that is internet address
- * sin_zero that is pad to size of 'struct sockaddr'
- * */
-/*
-struct sockaddr_in
-  {
-    __SOCKADDR_COMMON (sin_);
-    in_port_t sin_port;                
-    struct in_addr sin_addr;            
-    unsigned char sin_zero[sizeof (struct sockaddr) -__SOCKADDR_COMMON_SIZE -sizeof (in_port_t) -sizeof (struct in_addr)];
-  };*/
-int main(void){
-	int sockfd=socket(AF_INET,SOCK_STREAM,0);
-	printf("%d\n",sockfd);
-	struct sockaddr_in myAddr;
-	myAddr.sin_family=AF_INET;
-	myAddr.sin_port=htons(MYPORT);
-	myAddr.sin_addr.s_addr=inet_addr("192.168.99.130");
-        //bzero define include<string.h>
-	bzero(&(myAddr.sin_zero),8);
-	int status=bind(sockfd,(struct sockaddr*)&myAddr,sizeof(struct sockaddr));
-	printf("bind status %d\n",status);
-	return 0;
-}
-```
-*********************************************
 * connect() /usr/include/sys/socket.h
 ```c
 //如果出错，bind()也返回-1。
@@ -206,43 +191,6 @@ int main(void){
 */
 extern int connect (int __fd, __CONST_SOCKADDR_ARG __addr, socklen_t __len);
 ```
-* example
-```c
-#include <stdio.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <netinet/in.h>
-#define MYPORT 3491
-/**
- * Structure describing an Internet socket address
- * define include <netinet/in.h>
- * sin_port that is port number
- * sin_addr that is internet address
- * sin_zero that is pad to size of 'struct sockaddr'
- * */
-/*
-struct sockaddr_in
-  {
-    __SOCKADDR_COMMON (sin_);
-    in_port_t sin_port;                
-    struct in_addr sin_addr;            
-    unsigned char sin_zero[sizeof (struct sockaddr) -__SOCKADDR_COMMON_SIZE -sizeof (in_port_t) -sizeof (struct in_addr)];
-  };*/
-int main(void){
-	int sockfd=socket(AF_INET,SOCK_STREAM,0);
-	printf("%d\n",sockfd);
-	struct sockaddr_in myAddr;
-	myAddr.sin_family=AF_INET;
-	myAddr.sin_port=htons(MYPORT);
-	myAddr.sin_addr.s_addr=inet_addr("192.168.99.130");
-        //bzero define include<string.h>
-	bzero(&(myAddr.sin_zero),8);
-	int status=connect(sockfd,(struct sockaddr*)&myAddr,sizeof(struct sockaddr));
-	printf("connect status %d\n",status);
-	return 0;
-}
-```
-***********************************************************
 * listen() accept() /usr/include/sys/socket.h
 ```c
 /*

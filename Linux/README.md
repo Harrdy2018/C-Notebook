@@ -7,3 +7,4 @@
 * [宏定义](./g.md)
 * [size_t and ssize_t](./h.md)
 * [read and write](./i.md)
+* [确定主机字节序](./code/test1.c)

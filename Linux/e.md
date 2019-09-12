@@ -299,6 +299,8 @@ typedef unsigned short int sa_family_t;
 * [server.c](./code/server.c)
 * gcc -g server.c -o server.o && ./server.o
 * 这时候表明服务端的socket进程监听和等待客户端的连接，使用ps命令可以看到当前的进程正在后台运行，并且处于休眠状态，因此它没有消耗CPU资源
+* 查端口 netstat -an | grep '3000'
+* 查端口 ps -aux | grep '3000'
 ```linux
 [harrdy@localhost ~]$ ps -lx | grep './server.o'
 0  1000  13234   4184  20   0   4212   344 skb_wa S+   pts/1      0:00 ./server.o

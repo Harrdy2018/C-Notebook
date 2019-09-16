@@ -4,3 +4,6 @@
 * [结构体](./struct.md)
 * [goto](./goto.md)
 * [处理错误信息](./solve_error.md)
+* [函数指针](./func_ptr.md)
+* [指针数组、数组指针](./ptr_and_arr.md)
+* [Volatile](./keyword.md)

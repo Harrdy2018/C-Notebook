@@ -13,19 +13,23 @@ int *FindPivot(int *left,int *right){
     while(*left<*right){
       right--;
     }
-    swap(&(*left),&(*right));
+    swap(left,right);
     while(*left<*right){
       left++;
     }
-    swap(&(*left),&(*right));
+    swap(left,right);
   }
   return left;
 }
-void QuickSort(int *left,int *right){
-  if(left != right){
+void QuickSort(int arr[],int low,int high){
+  if(low<high){
+    int *left=arr+low;
+    int *right=arr+high;
     int *pivot=FindPivot(left,right);
-    QuickSort(left,pivot);
-    QuickSort(pivot+1,right);
+    int index=pivot-arr;
+    printf("%d\n",index);
+    QuickSort(arr,low,index-1);
+    QuickSort(arr,index+1,high);
   }   
 }
 void PrintfArr(int arr[],int len){
@@ -37,9 +41,7 @@ void PrintfArr(int arr[],int len){
 int main(){
   int arr[9]={50,10,90,30,70,40,80,60,20};
   int len=9;
-  int *left=arr;
-  int *right=arr+len-1;
-  QuickSort(left,right);
+  QuickSort(arr,0,8);
   PrintfArr(arr,9);
   return 0;
 }

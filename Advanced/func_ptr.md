@@ -37,3 +37,24 @@ int main(void){
     return 0;
 }
 ```
+### 应用场景
+* 函数指针通常用作回调函数 只提供一个函数的原型，具体的实现由调用者设定
+* 函数指针的一个典型应用场合是实现回调。为什么要回调？
+* 就是因为此时还不知道具体函数定义，事件发生时才调用、才确定；类比于面向对象中的“多态”+设计模式中的“观察者模式”，回调的实质仍然是抽象
+```c
+#include <stdio.h>
+void dog_printf(){
+    printf("I am a dog!\n");
+}
+void cat_printf(){
+    printf("I am a cat!\n");
+}
+void test(void (*p)(void)){
+    p();
+}
+void main(void){
+    test(dog_printf);//I am a dog!
+    test(cat_printf);//I am a cat!
+}
+```
+

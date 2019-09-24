@@ -17,14 +17,13 @@ void Merge(int *arrA,int lenA,int *arrB,int lenB,int *res){
     }
   }
   //谁先达到最大长度，谁先结束
-  if(j==lenB){
-    for(int k=i;k<lenA;k++){
-      res[k+j]=arrA[k];
-    }
-  }
   if(i==lenA){
-    for(int k=j;k<lenB;k++){
-      res[k+i]=arrB[k];
+    for(;j<lenB;j++){
+      res[i+j]=arrB[j];
+    }
+  }else{
+    for(;i<lenA;i++){
+      res[i+j]=arrA[i];
     }
   }
 }

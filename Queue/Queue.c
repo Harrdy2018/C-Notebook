@@ -25,12 +25,12 @@ my_bool deQueue(Queue *obj,ElemType *e){
     if(isEmpty(obj)){
         return my_false;
     }
+    *e=obj->data[obj->head];
     if(obj->head==obj->tail){
         obj->tail=-1;
         obj->head=-1;
         return my_true;
     }
-    *e=obj->data[obj->head];
     obj->head=(obj->head+1)%obj->size;
     return my_true;
 }

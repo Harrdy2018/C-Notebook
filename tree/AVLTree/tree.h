@@ -9,14 +9,15 @@ typedef enum my_bool{
     my_false=0,my_true
 }my_bool;
 TreeNode *createTreeNode(int k);
-my_bool insert(TreeNode *root,TreeNode *x);
+my_bool insert(TreeNode **obj,TreeNode *root,TreeNode *x);
 void inOrder(TreeNode *root);
 void preOrder(TreeNode *root);
 int treeHeight(TreeNode *root);
 int getTreeBalanceFactor(TreeNode *root);
 TreeNode *search(TreeNode *root,int x);
 void transplant(TreeNode **root,TreeNode *x,TreeNode *y);
-void treeRRotate(TreeNode **root,TreeNode *x);
-void treeLRotate(TreeNode **root,TreeNode *x);
-void treeLRRotate(TreeNode **root,TreeNode *x);
-void treeRLRotate(TreeNode **root,TreeNode *x);
+void treeRrotate(TreeNode **root,TreeNode *x);
+void treeLrotate(TreeNode **root,TreeNode *x);
+void treeLRrotate(TreeNode **root,TreeNode *x);
+void treeRLrotate(TreeNode **root,TreeNode *x);
+void treeRebalance(TreeNode **root,TreeNode *x);

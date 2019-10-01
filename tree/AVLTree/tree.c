@@ -6,24 +6,39 @@ TreeNode *createTreeNode(int k){
     obj->parent=obj->left=obj->right=NULL;
     return obj;
 }
-my_bool insert(TreeNode *root,TreeNode *x){
+my_bool insert(TreeNode **obj,TreeNode *root,TreeNode *x){
     if(x->val==root->val){
         return my_false;
     }else if(x->val>root->val){
         if(root->right==NULL){
             root->right=x;
             x->parent=root;
+            //当前结点依次去找他的父节点，如果出现一次BF=2 or -2 就作调整
+            while(root != NULL){
+                if(getTreeBalanceFactor(root)==2 || getTreeBalanceFactor(root)==-2){
+                    treeRebalance(obj,root);
+                    break;
+                }
+                root=root->parent;
+            }
             return my_true;
         }else{
-            return insert(root->right,x);
+            return insert(obj,root->right,x);
         }
     }else{
         if(root->left==NULL){
             root->left=x;
             x->parent=root;
+            while(root != NULL){
+                if(getTreeBalanceFactor(root)==2 || getTreeBalanceFactor(root)==-2){
+                    treeRebalance(obj,root);
+                    break;
+                }
+                root=root->parent;
+            }
             return my_true;
         }else{
-            return insert(root->left,x);
+            return insert(obj,root->left,x);
         }      
     }
 }
@@ -117,7 +132,7 @@ A=0                       A=0                        A=0     C=0
     5               right rotation       5
 3                                     3     8
 */
-void treeRRotate(TreeNode **root,TreeNode *x){
+void treeRrotate(TreeNode **root,TreeNode *x){
     if(x->left!=NULL){
         TreeNode *y=x->left;
         if(y->right != NULL){
@@ -128,7 +143,7 @@ void treeRRotate(TreeNode **root,TreeNode *x){
         x->parent=y;
     }  
 }
-void treeLRotate(TreeNode **root,TreeNode *x){
+void treeLrotate(TreeNode **root,TreeNode *x){
     if(x->right!=NULL){
         TreeNode *y=x->right;
         if(y->left!=NULL){
@@ -144,10 +159,10 @@ void treeLRotate(TreeNode **root,TreeNode *x){
 5          as 5 done left rotation    6    as 8 done right rotation   6
    6                                5                              5     8
 */
-void treeLRRotate(TreeNode **root,TreeNode *x){
+void treeLRrotate(TreeNode **root,TreeNode *x){
     if(x->left != NULL){
-        treeLRotate(root,x->left);
-        treeRRotate(root,x);
+        treeLrotate(root,x->left);
+        treeRrotate(root,x);
     }
 }
 /*
@@ -155,9 +170,24 @@ void treeLRRotate(TreeNode **root,TreeNode *x){
      6          as 6 done right rotation  5    as 4 done left rotation     4
   5                                         6                           5     6
 */
-void treeRLRotate(TreeNode **root,TreeNode *x){
+void treeRLrotate(TreeNode **root,TreeNode *x){
     if(x->right != NULL){
-        treeRRotate(root,x->right);
-        treeLRotate(root,x);
+        treeRrotate(root,x->right);
+        treeLrotate(root,x);
+    }
+}
+void treeRebalance(TreeNode **root,TreeNode *x){
+    int factor=getTreeBalanceFactor(x);
+    if(factor==2 && getTreeBalanceFactor(x->left)==1){
+        treeRrotate(root,x);
+    }else if(factor==-2 && getTreeBalanceFactor(x->right)==-1){
+        treeLrotate(root,x);
+    }else if(factor==-2 && getTreeBalanceFactor(x->right)==1){
+        treeRLrotate(root,x);
+    }else if(factor==2 && getTreeBalanceFactor(x->left)==-1){
+        treeLRrotate(root,x);
+    }else{
+        //只要BF满足AVL条件，这些异常都不考虑
+        printf("the observe node is %d  there is exceptions\n",x->val);
     }
 }

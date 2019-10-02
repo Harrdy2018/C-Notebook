@@ -13,13 +13,19 @@ my_bool insert(TreeNode **obj,TreeNode *root,TreeNode *x){
         if(root->right==NULL){
             root->right=x;
             x->parent=root;
-            //当前结点依次去找他的父节点，如果出现一次BF=2 or -2 就作调整
-            while(root != NULL){
-                if(getTreeBalanceFactor(root)==2 || getTreeBalanceFactor(root)==-2){
-                    treeRebalance(obj,root);
-                    break;
+            //tree rebalance
+            TreeNode *current=root;
+            //insert操作 待插入节点的父亲如果BF=0 树的高度一定没变化
+            //insert操作 待插入节点的父亲BF=1,-1,0,2,-2
+            if(getTreeBalanceFactor(current)!=0){
+                while(current!=NULL){
+                    //当前结点依次去找他的父节点，如果出现一次BF=2 or -2 就作调整
+                    if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                        treeRebalance(obj,current);
+                        break;
+                    }
+                    current=current->parent;
                 }
-                root=root->parent;
             }
             return my_true;
         }else{
@@ -29,17 +35,24 @@ my_bool insert(TreeNode **obj,TreeNode *root,TreeNode *x){
         if(root->left==NULL){
             root->left=x;
             x->parent=root;
-            while(root != NULL){
-                if(getTreeBalanceFactor(root)==2 || getTreeBalanceFactor(root)==-2){
-                    treeRebalance(obj,root);
-                    break;
+            //tree rebalance
+            TreeNode *current=root;
+            //insert操作 待插入节点的父亲如果BF=0 树的高度一定没变化
+            //insert操作 待插入节点的父亲BF=1,-1,0
+            if(getTreeBalanceFactor(current)!=0){
+                while(current!=NULL){
+                    //当前结点依次去找他的父节点，如果出现一次BF=2 or -2 就作调整
+                    if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                        treeRebalance(obj,current);
+                        break;
+                    }
+                    current=current->parent;
                 }
-                root=root->parent;
             }
             return my_true;
         }else{
             return insert(obj,root->left,x);
-        }      
+        }
     }
 }
 void inOrder(TreeNode *root){
@@ -178,9 +191,9 @@ void treeRLrotate(TreeNode **root,TreeNode *x){
 }
 void treeRebalance(TreeNode **root,TreeNode *x){
     int factor=getTreeBalanceFactor(x);
-    if(factor==2 && getTreeBalanceFactor(x->left)==1){
+    if(factor==2 && (getTreeBalanceFactor(x->left)==1 || getTreeBalanceFactor(x->left)==0)){
         treeRrotate(root,x);
-    }else if(factor==-2 && getTreeBalanceFactor(x->right)==-1){
+    }else if(factor==-2 && (getTreeBalanceFactor(x->right)==-1 || getTreeBalanceFactor(x->right)==0)){
         treeLrotate(root,x);
     }else if(factor==-2 && getTreeBalanceFactor(x->right)==1){
         treeRLrotate(root,x);
@@ -189,5 +202,180 @@ void treeRebalance(TreeNode **root,TreeNode *x){
     }else{
         //只要BF满足AVL条件，这些异常都不考虑
         printf("the observe node is %d  there is exceptions\n",x->val);
+    }
+}
+
+TreeNode *findMin(TreeNode *root){
+    if(root != NULL){
+        while(root->left!=NULL){
+            root=root->left;
+        }
+        return root;
+    }
+    return NULL;
+}
+TreeNode *findMax(TreeNode *root){
+  if(root != NULL){
+        while(root->right!=NULL){
+            root=root->right;
+        }
+        return root;
+    }
+    return NULL;
+}
+TreeNode *predecessor(TreeNode *x){
+    if(x->left!=NULL){
+        return findMax(x->left);
+    }else{
+        TreeNode *current=x->parent;
+        while(current!=NULL && current->val>x->val){
+            current=current->parent;
+        }
+        return current;
+    }
+}
+TreeNode *successor(TreeNode *x){
+    if(x->right!=NULL){
+        return findMin(x->right);
+    }else{
+        TreeNode *current=x->parent;
+        while(current!=NULL && current->val<x->val){
+            current=current->parent;
+        }
+        return current;
+    }
+}
+void treeDelete(TreeNode **root,TreeNode *x){
+    if(x==*root){
+        //case 1 the node is leaf
+        if(x->left==NULL && x->right==NULL){
+            x=NULL;
+            return ;
+        }
+        //case 2 the node have only child
+        if(x->left!=NULL && x->right==NULL){
+            transplant(root,x,x->left);
+            if(getTreeBalanceFactor(x->left)==2 || getTreeBalanceFactor(x->left)==-2){
+                treeRebalance(root,x->left);
+            }
+            return ;
+        }
+        if(x->left==NULL && x->right!=NULL){
+            transplant(root,x,x->right);
+            if(getTreeBalanceFactor(x->right)==2 || getTreeBalanceFactor(x->right)==-2){
+                treeRebalance(root,x->right);
+            }
+            return ;
+        }
+        //case 3 the node have both child
+        if(x->left!=NULL && x->right!=NULL){
+            TreeNode *current=successor(x);
+            if(current==x->right){
+                transplant(root,x,x->right);
+                if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                    treeRebalance(root,current);
+                }
+            }else{
+                TreeNode *curParent=current->parent;
+                if(current->right!=NULL){
+                    transplant(root,current,current->right);
+                }
+                transplant(root,x,current);
+                current->left=x->left;
+                x->left->parent=current;
+                current->right=x->right;
+                x->right->parent=current;
+                //rebalance
+                while(curParent != NULL){
+                    if(getTreeBalanceFactor(curParent)==2 || getTreeBalanceFactor(curParent)==-2){
+                        treeRebalance(root,curParent);
+                        break;
+                    }
+                    curParent=curParent->parent;
+                }
+            }
+            return ;
+        }
+    }else{
+        //case 1 the node is leaf
+        if(x->left==NULL && x->right==NULL){
+            if(x->parent->left==x){
+                x->parent->left=NULL;
+            }else{
+                x->parent->right=NULL;
+            }
+            TreeNode *current=x->parent;
+            x->parent=NULL;
+            //delete操作 待删除节点的父亲如果BF=1,-1 那么树的高度一定没变化
+            //delete操作 待删除节点的父亲BF=1,-1,0,2,-2
+            if(getTreeBalanceFactor(current)!=1 && getTreeBalanceFactor(current)!=-1){
+                while(current != NULL){
+                    if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                        treeRebalance(root,current);
+                        break;
+                    }
+                    current=current->parent;
+                }
+            }
+            return ;
+        }
+        //case 2 the node have only child
+        if(x->left!=NULL && x->right==NULL){
+            TreeNode *current=x->parent;
+            transplant(root,x,x->left);
+            while(current != NULL){
+                if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                    treeRebalance(root,current);
+                    break;
+                }
+                current=current->parent;
+            }
+            return ;
+        }
+        if(x->left==NULL && x->right!=NULL){
+            TreeNode *current=x->parent;
+            transplant(root,x,x->right);
+            while(current != NULL){
+                if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                    treeRebalance(root,current);
+                    break;
+                }
+                current=current->parent;
+            }
+            return ;
+        }
+        //case 3 the node have both child
+        if(x->left!=NULL && x->right!=NULL){
+            TreeNode *current=successor(x);
+            if(current==x->right){
+                transplant(root,x,x->right);
+                while(current != NULL){
+                    if(getTreeBalanceFactor(current)==2 || getTreeBalanceFactor(current)==-2){
+                        treeRebalance(root,current);
+                        break;
+                    }
+                    current=current->parent;
+                }
+            }else{
+                TreeNode *curParent=current->parent;
+                if(current->right!=NULL){
+                    transplant(root,current,current->right);
+                }
+                transplant(root,x,current);
+                current->left=x->left;
+                x->left->parent=current;
+                current->right=x->right;
+                x->right->parent=current;
+                //rebalance
+                while(curParent != NULL){
+                    if(getTreeBalanceFactor(curParent)==2 || getTreeBalanceFactor(curParent)==-2){
+                        treeRebalance(root,curParent);
+                        break;
+                    }
+                    curParent=curParent->parent;
+                }
+            }
+            return ;
+        }
     }
 }

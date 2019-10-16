@@ -203,3 +203,34 @@ int main(void)
 	return 0;
 }
 ```
+### 位域
+```c
+#include <stdio.h>
+/*说明testA类型，共占1个字节。其中位域a占1位，位域b占3位，位域c占4位*/
+struct testA{
+    unsigned int a:1;
+    unsigned int b:3;
+    unsigned int c:4;
+};
+/*一个位域必须存储在同一个字节中，不能跨两个字节。如一个字节所剩空间不够存放另一位域时，应从下一单元起存放该位域*/
+struct testB{
+    int a:4;
+    int:0;//空域
+    int b:4;//从下一个单元开始存放
+    int c:4;
+};
+/*位域可以无位域名，这时它只用来作填充或调整位置。无名的位域是不能使用的*/
+struct testC{
+    int a:1;
+    int :2;
+    int b:3;
+    int c:2;
+};
+void main(void){
+    struct testA p;
+    p.a=1;//无符号1位 最大就是 1
+    p.b=7;//无符号3位 最大就是 111=7
+    p.c=15;//无符号4位 最大就是 1111=15
+    printf("%d  %d  %d\n",p.a,p.b,p.c);
+}
+```

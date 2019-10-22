@@ -13,10 +13,13 @@ int Func(int x){
     return x;
 }
 int main(void){
-    printf("%p\n",Func);//00401410
-    int (*p) (int x);  /*定义一个函数指针*/
-    p = Func;          /*将Func函数的首地址赋给指针变量p*/
-    printf("%d\n",(*p)(2));//2
+    printf("%p %p\n",Func,&Func);//00401410  00401410
+    int (*p1) (int x);  /*定义一个函数指针*/
+    int (*p2) (int x);
+    p1 = Func;          /*将Func函数的首地址赋给指针变量p1*/
+    printf("%d %d\n",p1(2),(*p1)(2));//2  2
+    p2 = &Func;          /*将Func函数的首地址赋给指针变量p2*/
+    printf("%d %d\n",p2(2),(*p2)(2));//2  2
     return 0;
 }
 ```
@@ -57,4 +60,3 @@ void main(void){
     test(cat_printf);//I am a cat!
 }
 ```
-

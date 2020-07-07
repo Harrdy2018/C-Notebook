@@ -93,7 +93,7 @@ git diff --cached HEAD
 * 添加远程仓库
 ```
 git remote add <shortname> <url> 添加一个新的远程 Git 仓库，同时指定一个方便使用的简写
-git remote add pb https://github.com/paulboone/ticgit
+git remote add pb https://github.com/paulboone/tic.git
 ```
 * 从远程仓库中抓取与拉取
 ```

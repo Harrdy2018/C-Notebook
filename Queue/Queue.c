@@ -6,6 +6,7 @@ Queue *initQueue(int k){
     obj->head=-1;
     obj->tail=-1;
     obj->size=k;
+    obj->len=0;
     return obj;
 }
 /** Insert an element into the circular queue. Return true if the operation is successful. */
@@ -18,6 +19,7 @@ my_bool enQueue(Queue *obj,ElemType e){
     }
     obj->tail=(obj->tail+1)%obj->size;
     obj->data[obj->tail]=e;
+    obj->len++;
     return my_true;
 }
 /** Delete an element from the circular queue. Return true if the operation is successful. */
@@ -25,6 +27,7 @@ my_bool deQueue(Queue *obj,ElemType *e){
     if(isEmpty(obj)){
         return my_false;
     }
+    obj->len--;
     *e=obj->data[obj->head];
     if(obj->head==obj->tail){
         obj->tail=-1;
@@ -50,11 +53,11 @@ ElemType Rear(Queue *obj){
 }
 /** Checks whether the circular queue is empty or not. */
 my_bool isEmpty(Queue *obj){
-    return obj->head==-1;
+    return obj->len==0;
 }
 /** Checks whether the circular queue is full or not. */
 my_bool isFull(Queue *obj){
-    return ((obj->tail+1)%obj->size)==obj->head;
+    return obj->len==obj->size;
 }
 /**printf queue*/
 void printfQueue(Queue q){
@@ -71,4 +74,5 @@ void printfQueue(Queue q){
 void clearQueue(Queue *obj){
     obj->head=-1;
     obj->tail=-1;
+    obj->len=0;
 }

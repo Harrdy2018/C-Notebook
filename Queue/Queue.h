@@ -9,6 +9,7 @@ typedef struct queue{
     int head;
     int tail;
     int size;
+    int len;
 }Queue;
 typedef enum my_bool{
     my_false=0,my_true

@@ -85,6 +85,34 @@ git diff --cached
 equals to
 git diff --cached HEAD
 ```
+### 远程仓库
+* git remote 简单查看远程仓库(列出你指定的每一个远程服务器的简写)
+* git remote --verbose 会显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL
+* git remote rename pb paul 远程仓库重命名
+* git remote remove paul 移除远程仓库
+* 添加远程仓库
+```
+git remote add <shortname> <url> 添加一个新的远程 Git 仓库，同时指定一个方便使用的简写
+git remote add pb https://github.com/paulboone/ticgit
+```
+* 从远程仓库中抓取与拉取
+```
+就如刚才所见，从远程仓库中获得数据，可以执行：
+$ git fetch <remote>
+这个命令会访问远程仓库，从中拉取所有你还没有的数据。
+执行完成后，你将会拥有那个远程仓库中所有分支的引用，可以随时合并或查看。
+如果你使用 clone 命令克隆了一个仓库，命令会自动将其添加为远程仓库并默认以 “origin” 为简写。
+所以，git fetch origin 会抓取克隆（或上一次抓取）后新推送的所有工作。
+必须注意 git fetch 命令只会将数据下载到你的本地仓库——它并不会自动合并或修改你当前的工作。
+当准备好时你必须手动将其合并入你的工作。
+```
+* 推送到远程仓库
+```
+当你想分享你的项目时，必须将其推送到上游。 这个命令很简单：git push <remote> <branch>。
+当你想要将 master 分支推送到 origin 服务器时（再次说明，克隆时通常会自动帮你设置好那两个名字）， 那么运行这个命令就可以将你所做的备份到服务器：
+$ git push origin master
+```
+* 查看某个远程仓库更多信息，可以使用 git remote show 仓库别名
 ### 其他问题
 ```
 本地仓和远程仓现在是同步的，我在本地仓删除base分支，怎么同步到远程仓去?

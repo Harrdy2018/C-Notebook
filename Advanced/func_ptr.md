@@ -60,3 +60,42 @@ void main(void){
     test(cat_printf);//I am a cat!
 }
 ```
+* 用typedef来定义一个指针函数这样使在大型代码中更加简洁
+```
+这里面的pfun代表的是函数的类型，通过pfun来代表void (*)(int)函数类型即pfun是指针函数的别名，
+pfun p相当于定义了一个void (*p)(int)函数指针
+```
+```c
+#include<stdio.h>
+typedef void (*pfun)(int data);
+void myfun(int data)
+{
+    printf("%d\n",data);
+}
+int main()
+{
+    pfun p=myfun;
+    (*p)(100);
+    return 0;
+}
+```
+* 第三种用结构体函数指针的方法
+```c
+#include<stdio.h>
+typedef struct gg
+{
+    void (*pfun)(int data);
+}gg;
+
+void myfun(int data)
+{
+    printf("%d\n",data);
+}
+int main()
+{
+    gg gcode;
+    gcode.pfun=myfun;
+    (gcode.pfun)(100);
+    return 0;
+}
+```

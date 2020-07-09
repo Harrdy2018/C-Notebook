@@ -127,12 +127,12 @@ git checkout 1.0.0
 创建轻量标签
 git tag 1.0.0-light
 创建带备注标签(推荐)
-git tag -a 1.0.0 -m "这是备注信息"
+git tag --annotate 1.0.0 -m "这是备注信息"
 针对特定commit版本SHA创建标签
-git tag -a 1.0.0 0c3b62d -m "这是备注信息"
+git tag --annotate 1.0.0 0c3b62d -m "这是备注信息"
 
 删除标签(本地)
-git tag -d 1.0.0
+git tag --delete 1.0.0
 
 将本地标签发布到远程仓库
 发送所有

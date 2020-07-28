@@ -54,3 +54,20 @@ Registry Mirrors:                #important
 * docker rm 容器
 * docker rm -f $(docker ps -q -a) 删除所有容器
 * docker logs -f 容器 查看启动日志 方便调试 监听
+### 容器文件拷贝
+* docker cp test.txt eaf5799fdf3c:/usr/local
+* docker cp eaf5799fdf3c:/usr/local/test.txt ./
+### 目录挂载
+* 创建一个卷 docker volume create ubuntu_test
+* 查看卷 docker volume ls
+* 查看卷的详细信息 docker volume inspect ubuntu_test
+* --mount 初始化以容器为主
+* docker run -d -it --name myubuntu_test --mount src=ubuntu_test,dst=/usr/local/test ubuntu:18.04
+#### other
+* 初始化以宿主机为主
+* docker run -d -it --name myubuntu -v /home/harrdy/Desktop/:/data ubuntu:18.04
+#### 企业级命令
+* -e 向容器传递环境变量
+* --privileged 使用该参数，container内的root拥有真正的root权限
+* --rm 退出容器时会自动将其删除
+* docker run -v /home/harrdy:/data -e HOST_IP=192.168.99.132 -e NAME=HARRDY --privileged -it --rm ubuntu:18.04 /bin/bash

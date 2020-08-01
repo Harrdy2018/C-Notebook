@@ -78,3 +78,247 @@ export LD_LIBRARY_PATH=newPath:$LD_LIBRARY_PATH
 whereis ldconfig
 /usr/sbin/ldconfig
 ```
+### why? extern "C" {} ?
+* util.h
+```c
+// util.h
+
+#ifndef UTIL_H
+#define UTIL_H
+int add(int, int);
+#endif
+```
+* util.c
+```c
+// util.c
+
+int add(int a, int b)
+{
+	return a + b;
+}
+```
+* main.c
+```c
+// main.c
+
+#include <stdio.h>
+#include "util.h"
+
+int main(int argc, char *argv[])
+{
+	int sum = add(1, 2);
+	printf("%d\n", sum);
+	return 0;
+}
+```
+* gcc 编译 add还是add
+```sh
+[root@localhost Desktop]# gcc -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 add
+0000000000000000         *UND*	0000000000000000 printf
+```
+* g++ 编译 add变成了_Z3addii(g++编译器原因,因为C++支持函数重载（函数名称相同，参数列表不同）)
+```sh
+[root@localhost Desktop]# g++ -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 _Z3addii
+0000000000000000         *UND*	0000000000000000 printf
+```
+* _Z3adddd，表示参数列表为两个double类型的add函数，（3代表函数名称是3个字符）
+* _Z3addii，表示参数列表为两个int类型的add函数
+```sh
+[root@localhost Desktop]# cat main.c
+// main.c
+
+#include <stdio.h>
+#include "util.h"
+
+int add(double a, double b)
+{
+	return a+b;
+}
+
+int main(int argc, char *argv[])
+{
+	int sum = add(1, 2);
+	printf("%d\n", sum);
+	return 0;
+}
+[root@localhost Desktop]# g++ -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000001e _Z3adddd
+000000000000001e g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 _Z3addii
+0000000000000000         *UND*	0000000000000000 printf
+```
+* 起源
+```
+由于gcc和g++生成符号表的方式不同，导致在C++项目中如果使用gcc编译的C模块，会出现链接错误。
+因为链接器会去C模块的（.o）文件中查找，_Z3addii这样的符号。
+显然在C模块的目标文件(.o)中，不存在_Z3addii这样的符号，它有的只是_add。
+
+什么叫：C++项目中如果使用gcc编译的C模块？
+一个项目整体是C++项目，最终编译用g++编译，此时来了一个经过gcc编译的util.o目标文件，也就是一个C模块
+```
+* 解决办法
+```sh
+[root@localhost Desktop]# cat util.c
+// util.c
+
+int add(int a, int b)
+{
+	return a + b;
+}
+[root@localhost Desktop]# cat util.h
+// util.h
+
+#ifndef UTIL_H
+#define UTIL_H
+extern "C" int add(int, int);
+#endif
+[root@localhost Desktop]# cat main.c
+// main.c
+#include <stdio.h>
+#include "util.h"
+int main(int argc, char *argv[])
+{
+	int sum = add(1, 2);
+	printf("%d\n", sum);
+}
+```
+* c模块
+```sh
+[root@localhost Desktop]# gcc -c util.c -o util.o && objdump -t util.o
+
+util.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 util.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	0000000000000014 add
+```
+* c++项目
+```sh
+[root@localhost Desktop]# g++ -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 add
+0000000000000000         *UND*	0000000000000000 printf
+```
+#### c模块头文件中的extern "C" {}标准写法
+```sh
+ [root@localhost Desktop]# cat util.h
+// util.h
+#ifndef UTIL_H
+#define UTIL_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+int add(int, int);
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+[root@localhost Desktop]# cat main.c
+// main.c
+#include <stdio.h>
+#include "util.h"
+int main(int argc, char *argv[])
+{
+	int sum = add(1, 2);
+	printf("%d\n", sum);
+	return 0;
+}
+```
+* g++编译有 __cplusplus宏
+```sh
+[root@localhost Desktop]# g++ -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 add
+0000000000000000         *UND*	0000000000000000 printf
+```
+* gcc编译没有 __cplusplus宏
+```sh
+[root@localhost Desktop]# gcc -c main.c -o main.o && objdump -t main.o
+
+main.o:     file format elf64-x86-64
+
+SYMBOL TABLE:
+0000000000000000 l    df *ABS*	0000000000000000 main.c
+0000000000000000 l    d  .text	0000000000000000 .text
+0000000000000000 l    d  .data	0000000000000000 .data
+0000000000000000 l    d  .bss	0000000000000000 .bss
+0000000000000000 l    d  .rodata	0000000000000000 .rodata
+0000000000000000 l    d  .note.GNU-stack	0000000000000000 .note.GNU-stack
+0000000000000000 l    d  .eh_frame	0000000000000000 .eh_frame
+0000000000000000 l    d  .comment	0000000000000000 .comment
+0000000000000000 g     F .text	000000000000003c main
+0000000000000000         *UND*	0000000000000000 add
+0000000000000000         *UND*	0000000000000000 printf
+```

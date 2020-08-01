@@ -1,4 +1,4 @@
-## makefile
+## makefile 知识
 * make -f Makefile 等价于 make example
 * make clean
 ```Makefile

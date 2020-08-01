@@ -1,4 +1,4 @@
-## docker
+## docker 知识
 ### 安装镜像加速器(华为云、阿里云)
 * cat /etc/docker/daemon.json
 ```json

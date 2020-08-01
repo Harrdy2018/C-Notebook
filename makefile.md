@@ -40,3 +40,62 @@ debug:
 	echo $(SRC)
 	echo ${PWD}
 ```
+### 一个多文件编译例子
+```sh
+[root@localhost mytest]# tree ../mytest/
+../mytest/
+├── app
+├── build
+│   ├── hello.o
+│   └── main.o
+├── lib
+│   └── hello.h
+├── Makefile
+└── src
+    ├── hello.c
+    └── main.c
+
+3 directories, 7 files
+[root@localhost mytest]# cat ./lib/hello.h
+#ifndef HELLO_H
+#define HELLO_H
+void hey();
+#endif
+[root@localhost mytest]# cat ./src/hello.c
+#include <stdio.h>
+void hey()
+{
+	printf("%s\n", "hello");
+}
+[root@localhost mytest]# cat ./src/main.c
+#include <stdio.h>
+#include "hello.h"
+int main(int argc, char *argv[])
+{
+	hey();
+	return 0;
+}
+[root@localhost mytest]# cat Makefile
+BUILD=${PWD}/build
+LIB=${PWD}/lib
+SRC=${PWD}/src
+
+app:${BUILD}/main.o ${BUILD}/hello.o
+	gcc -g ${BUILD}/main.o ${BUILD}/hello.o -o app
+${BUILD}/main.o:${SRC}/main.c
+	gcc -c ${SRC}/main.c -I ${LIB} -o ${BUILD}/main.o
+${BUILD}/hello.o:${SRC}/hello.c
+	gcc -c ${SRC}/hello.c -o ${BUILD}/hello.o
+clean:
+	rm -rf ${BUILD}/*
+debug:
+	echo ${PWD};
+	echo ${BUILD};
+	echo ${LIB};
+	echo ${SRC};
+print:
+	ls -l ${BUILD}
+run:
+	${PWD}/app
+```
+

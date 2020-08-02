@@ -1,7 +1,7 @@
 ## Linux 网络编程
 ### 搜索技巧
 * find . -name 'in.h'
-* grep -r 'struct in_addr'
+* grep -r 'struct in_addr' /usr/include/
 ### 进程间通信方式
 * 管道(pipe)(包括匿名管道和命名管道)
 * 信号(signal)

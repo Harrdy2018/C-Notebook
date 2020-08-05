@@ -322,3 +322,48 @@ SYMBOL TABLE:
 0000000000000000         *UND*	0000000000000000 add
 0000000000000000         *UND*	0000000000000000 printf
 ```
+### 编译选项
+* -Wall 选项可以打开所有类型的语法警告，以便于确定程序源代码是否是正确的，并且尽可能实现可移植性
+* -pedantic GCC在编译不符合ANSI/ISO C语言标准的源代码时，那么源程序中使用了扩展语法的地方将产生相应的警告信息。
+```c
+//({statement list})是一个表达式，逗号表达式类似，但是功能更强，({与})中可以包含有多条语句(可以是变量定义、复杂的控制语句)，
+//该表达式的值为statement list中最后一条语句的值，举例：
+#include <stdio.h>
+void test()
+{
+    printf("%s\n", "Hello World!");
+    int result = ({
+        int i, sum = 0;
+        for(i = 1; i <= 100; i++) {
+            sum += i;
+        }
+        sum;
+    });
+    printf("result=%d\n", result);
+}
+/*
+gcc -c -Wall -pedantic -g main.c -o main.o
+gcc -c -Wall -pedantic -g test.c -o test.o
+gcc main.o test.o  -o app.exe && ./app.exe
+rm -rf main.o test.o
+warning: ISO C forbids braced-groups within expressions [-Wpedantic]
+*/
+```
+```c
+//编译器提醒程序员，这段C程序使用了不符合ISO C标准的语法，如果使用其他的编译器(非GCC)编译这段代码有能会出错。
+//在所有使用GNU 扩展关键字的表达式之前加__extension__ 关键字后，使用pedantic选项编译时，编译器就不再发出警告信息:
+#include <stdio.h>
+void test()
+{
+    printf("%s\n", "Hello World!");
+    int result = __extension__ ({
+        int i, sum = 0;
+        for(i = 1; i <= 100; i++) {
+            sum += i;
+        }
+        sum;
+    });
+    printf("result=%d\n", result);
+}
+```
+* -ansi支持符合ANSI标准的C程序.这样就会关闭GNU C中某些不兼容ANSI C的特性(还不知道怎么使用)

@@ -32,3 +32,17 @@ int main(int argc, char *argv[])
     return 0;
 }
 ```
+### fprintf
+* fprinf(stream, "%s", "we");
+* 发送格式化字符串到流 stream 中
+```c
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+    FILE *fp = fopen("./test.txt", "w+");
+    int num = fprintf(fp,"%s %s %s %d", "we", "are", "in", 2020);
+    printf("%d\n", num); // 14
+    fclose(fp);
+    return 0;
+}
+```

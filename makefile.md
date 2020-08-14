@@ -98,4 +98,68 @@ print:
 run:
 	${PWD}/app
 ```
+### 一个多文件编译例子
+```sh
+[root@localhost mytest]# tree .
+.
+├── app
+├── build
+│   └── main.o
+├── lib
+│   ├── bits
+│   │   └── socket.h
+│   └── sys
+│       └── socket.h
+├── Makefile
+└── src
+    └── main.c
 
+5 directories, 6 files
+```
+```sh
+[root@localhost mytest]# cat ./lib/bits/socket.h 
+#ifndef _BITS_SOCKET_H
+#define _BITS_SOCKET_H
+
+#ifndef _SYS_SOCKET_H
+#error "Never include 'bits/socket.h' directly;use 'sys/socket.h' instead."
+#endif
+
+
+#endif
+[root@localhost mytest]# cat ./lib/sys/socket.h 
+#ifndef _SYS_SOCKET_H
+#define _SYS_SOCKET_H 1
+
+#include "bits/socket.h"
+
+#endif
+[root@localhost mytest]# cat Makefile 
+BUILD=${PWD}/build
+LIB=${PWD}/lib
+SRC=${PWD}/src
+
+app:${BUILD}/main.o
+	gcc ${BUILD}/main.o -o app
+${BUILD}/main.o:${SRC}/main.c
+	gcc -c -g ${SRC}/main.c -I ${LIB} -o ${BUILD}/main.o
+clean:
+	rm -rf ${BUILD}/*
+debug:
+	echo ${PWD};
+	echo ${BUILD};
+	echo ${LIB};
+	echo ${SRC};
+print:
+	ls -l ${BUILD}
+run:
+	${PWD}/app
+[root@localhost mytest]# cat ./src/main.c 
+#include <stdio.h>
+#include "sys/socket.h"
+int main(int argc, char *argv[])
+{
+	printf("%s\n", "Hello World!");
+	return 0;
+}
+```

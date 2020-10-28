@@ -40,3 +40,8 @@ gcc -c main.c test.c
 gcc -g main.o test.o  -o main.exe && ./main.exe
 rm -rf main.exe main.o test.o
 ```
+### include
+* 把包含的文件完全的放到当前文件展开，可以是任意的文件，.txt/.h/...
+### extern
+* extern 只能修饰全局变量，这个变量是外面文件的
+* extern 可以修饰外面文件的函数

@@ -154,3 +154,51 @@ Num     Type           Disp Enb Address    What
 ```
 * next 继续执行下一条语句 不会跟踪进入函数，而是继续执行下面的语句
 * step 继续执行下一条语句 会跟踪进入函数内部
+### print/f 表达式
+* x(hex) 按十六进制格式显示变量。
+* d(decimal) 按十进制格式显示变量。
+* u(unsigned decimal) 按十进制格式显示无符号整型。
+* o(octal) 按八进制格式显示变量。
+* t(binary) 按二进制格式显示变量。
+* a(address) 按十六进制格式显示变量。
+* c(char) 按字符格式显示变量。
+* f(float) 按浮点数格式显示变量
+* i(instruction)
+* s(string)
+```
+(gdb) print a=65
+$15 = 65
+(gdb) print/x a
+$18 = 0x41
+(gdb) print/d a
+$19 = 65
+(gdb) print/u a
+$20 = 65
+(gdb) print/o a
+$21 = 0101
+(gdb) print/t a
+$22 = 1000001
+(gdb) print/a a
+$23 = 0x41
+(gdb) print/c a
+$26 = 65 'A'
+(gdb) print/f a
+$27 = 9.10844002e-44
+```
+### x/nfu address 表达式
+* n: 需要显示的内存单元个数，也就是从当前地址向后显示几个内存单元的内容，一个内存单元的大小由后面的u定义
+* f：显示格式
+```
+x(hex) 按十六进制格式显示变量。
+d(decimal) 按十进制格式显示变量。
+u(unsigned decimal) 按十进制格式显示无符号整型。
+o(octal) 按八进制格式显示变量。
+t(binary) 按二进制格式显示变量。
+a(address) 按十六进制格式显示变量。
+c(char) 按字符格式显示变量。
+f(float) 按浮点数格式显示变量
+```
+* u：每个单元的大小，按字节数来计算。默认是4 bytes。GDB会从指定内存地址开始读取指定字节，并把其当作一个值取出来，并使用格式f来显示
+* b:1 byte     h:2 bytes     w:4 bytes g:8 bytes
+* b(byte), h(halfword), w(word), g(giant, 8 bytes).
+* 比如x/3uh 0x54320表示从内存地址0x54320读取内容，h表示以双字节为单位，3表示输出3个单位，u表示按照十六进制显示。

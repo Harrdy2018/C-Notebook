@@ -1,28 +1,8 @@
 ## static 关键字
-* 多文件编译的时候 隐藏
-* a.c file
+* 将变量或者函数隐藏在当前c文件中
 ```c
-#include <stdio.h>
-int a=123;
-static int b=234;
-void test(){
-    printf("Hello World!!!\n");
-}
-static void TEST(){
-    printf("Hello World\n");
-}
-```
-* main.c file
-```c
-#include <stdio.h>
-void main(void){
-    extern int a;
-    extern int b;
-    printf("%d\n",a);
-    //printf("%d\n",b);
-    test();
-    //TEST();
-}
+一般全局变量如果要使用。第一，extern int a;第二,暴露出一个get函数接口
+静态全局变量如果要使用。暴露出一个get函数接口
 ```
 * 保持变量内容的持久
 ```c

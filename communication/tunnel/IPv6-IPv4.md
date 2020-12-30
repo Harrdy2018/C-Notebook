@@ -1,4 +1,4 @@
-### Ipv6 over Ipv6 手动隧道
+### Ipv6 over Ipv4 手动隧道
 ![Image](./../common/IPv6-IPv4.jpg)
 #### FW10 配置
 * 第一步 FW10 GE 0/0/0 ping FW11 GE 0/0/0

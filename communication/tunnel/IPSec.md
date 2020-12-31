@@ -91,9 +91,6 @@ display ipsec policy name fw11Policy
 192.168.1.10/24                                          192.168.2.11/24
 GW：192.168.1.1                                          GW: 192.168.2.1
 # PC ping GW check
-# 引流路由配置
-[FW10]display current-configuration | inc route-static   [FW11]display current-configuration | inc route-static
-ip route-static 0.0.0.0 0.0.0.0 9.0.0.1                  ip route-static 0.0.0.0 0.0.0.0 8.0.0.1
 # PC N10 ping PC N11 check
 display ike sa
 display ipsec sa

@@ -46,9 +46,9 @@ display ike peer name fw11 # 根据 ike name 查看详细信息
 * 配置感兴趣流 注意 在ike v1版本中双方感兴趣流一定要互为镜像
 ```sh
 [FW10]display acl 3000
- rule permit ip source 9.0.0.0 0.255.255.255 destination 8.0.0.0 0.255.255.255
+ rule permit ip source 192.168.1.0 0.0.0.255 destination 192.168.2.0 0.0.0.255 # 报文的SIP DIP
 [FW11]display acl 3000
- rule permit ip source 8.0.0.0 0.255.255.255 destination 9.0.0.0 0.255.255.255
+ rule permit ip source 192.168.2.0 0.0.0.255 destination 192.168.1.0 0.0.0.255 # 报文的SIP DIP
 ```
 * 配置 IPSec 安全提议
 ```sh

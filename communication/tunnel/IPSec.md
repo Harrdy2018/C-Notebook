@@ -1,6 +1,6 @@
 ### IPSec 隧道配置
 ![Image](./../common/ipsec.jpg)
-#### FW10 FW11 基本配置
+#### 配置教程
 * FW10 GE 0/0/0 ping FW11 GE 0/0/0
 ```sh
 # 接口配置

@@ -1,6 +1,6 @@
 ### Ipv4 over Ipv6 手动隧道
 ![Image](./../common/IPv4-IPv6.jpg)
-#### FW10 配置
+#### 配置教程
 * 第一步 FW10 GE 0/0/0 ping FW11 GE 0/0/0
 ```sh
 # 接口配置

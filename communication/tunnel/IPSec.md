@@ -76,7 +76,27 @@ display ipsec policy name fw11Policy
  undo service-manage enable                                undo service-manage enable
  ipsec policy fw10Policy                                   ipsec policy fw11Policy
 ```
-### 连通性检查并查看
-* display ike sa
-* display ipsec sa
-* display ipsec statistics
+#### 收尾
+```sh
+# 接口配置
+[FW10-GigabitEthernet1/0/0]dis this                      [FW11-GigabitEthernet1/0/0]dis this
+ undo shutdown                                            undo shutdown
+ ip address 192.168.1.1 255.255.255.0                     ip address 192.168.2.1 255.255.255.0
+ undo service-manage enable                               undo service-manage enable
+# 安全域配置
+[FW10-zone-trust]dis this                                [FW11-zone-trust]dis this
+ add interface GigabitEthernet0/0/0                       add interface GigabitEthernet0/0/0
+ add interface GigabitEthernet1/0/0                       add interface GigabitEthernet1/0/0
+# PC N10                                                 PC N11
+192.168.1.10/24                                          192.168.2.11/24
+GW：192.168.1.1                                          GW: 192.168.2.1
+# PC ping GW check
+# 引流路由配置
+[FW10]display current-configuration | inc route-static   [FW11]display current-configuration | inc route-static
+ip route-static 0.0.0.0 0.0.0.0 9.0.0.1                  ip route-static 0.0.0.0 0.0.0.0 8.0.0.1
+# PC N10 ping PC N11 check
+display ike sa
+display ipsec sa
+display ipsec statistics
+# 完结撒花
+```

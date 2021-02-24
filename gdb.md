@@ -202,3 +202,28 @@ f(float) 按浮点数格式显示变量
 * b:1 byte     h:2 bytes     w:4 bytes g:8 bytes
 * b(byte), h(halfword), w(word), g(giant, 8 bytes).
 * 比如x/3uh 0x54320表示从内存地址0x54320读取内容，h表示以双字节为单位，3表示输出3个单位，u表示按照十六进制显示。
+### 调用函数
+* 一般入参
+```sh
+call (void)adda(1,2)
+call (int)addb(1,2)
+
+p adda(1,2)
+p big=22 # p改变入参值
+p adda(big,13)
+```
+* 结构体入参
+```sh
+(gdb) p (Student *)malloc(sizeof(Student))
+$29 = (Student *) 0x9a17d8
+(gdb) p ((Student *)0x9a17d8)->age=123
+$30 = 123
+(gdb) p ((Student *)0x9a17d8)->name="oppo"
+$31 = "oppo\000\000\000\000\000"
+(gdb) call (void)printStruct(((Student *)0x9a17d8))
+123--oppo
+(gdb) p sizeof(Student)
+$32 = 16
+(gdb) p sizeof(Student *)
+$33 = 4
+```

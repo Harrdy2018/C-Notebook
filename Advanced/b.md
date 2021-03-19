@@ -17,11 +17,11 @@ float 32bit
   化成32位
       0x41 0x04 0x00 0x00
   放到栈里面去,栈的地址是从高处向低处生长,也就是先将高位放在栈底：
-      栈顶
-            buffer(1)  0x00
-            buffer(2)  0x00
-            buffer(3)  0x40
-            buffer(4)  0x41
+      栈顶  (gdb) x/4xb &a
+            0x7fffffffe29c:	0x00
+            0x7fffffffe29d:	0x00
+            0x7fffffffe29e:	0x04
+            0x7fffffffe29f:	0x41
       栈低     
 ```
 * float为8.25的解释程序
@@ -68,15 +68,15 @@ double 64bit
   化成32位
       0x40 0x12 0x00 0x00 0x00 0x00 0x00 0x00
   放到栈里面去,栈的地址是从高处向低处生长,也就是先将高位放在栈底：
-      栈顶
-            buffer(1)  0x00
-            buffer(2)  0x00
-            buffer(3)  0x00
-            buffer(4)  0x00
-            buffer(5)  0x00
-            buffer(6)  0x00
-            buffer(7)  0x12
-            buffer(8)  0x40
+      栈顶  (gdb) x/8xb &a
+            0x7fffffffe298:	0x00
+            0x7fffffffe299:	0x00
+            0x7fffffffe29a:	0x00
+            0x7fffffffe29b:	0x00
+            0x7fffffffe29c:	0x00
+            0x7fffffffe29d:	0x00
+            0x7fffffffe29e:	0x12
+            0x7fffffffe29f:	0x40
       栈低     
 ```
 * double为4.5的解释程序

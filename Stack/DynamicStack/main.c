@@ -18,5 +18,19 @@ int main(void){
         printf("the capcity of stack is %d\n",pStack->capacity);
         TraverseStack(pStack);
     }
+
+    /* 进制转换 */
+    int num=100;
+    Stack *obj=InitStack(1);
+    while(num!=0){
+        PushStack(obj,num%8);
+        num=num/8;
+    }
+    printf("the capcity of stack is %d\n",obj->capacity);
+    while(!IsEmptyStack(obj)){
+        int e;
+        PopStack(obj,&e);
+        printf("%d",e);
+    }
     return 0;
 }

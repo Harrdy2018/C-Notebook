@@ -44,14 +44,20 @@ MyBool IsEmptyStack(Stack *obj){
 */
 MyBool PushStack(Stack *obj,SElemType ele){
     if(IsFullStack(obj)){
-        obj->base=(SElemType *)realloc(obj->base,(obj->capacity+STACK_SIZE_INCREMENT)*sizeof(SElemType));
-        if(obj->base==NULL){
+        SElemType *original = obj->base;
+        obj->base = (SElemType *)realloc(obj->base,(obj->capacity + STACK_SIZE_INCREMENT) * sizeof(SElemType));
+        if(obj->base == NULL){
+            DestroyStack(obj);
             return my_false;
         }
-        obj->top=obj->base+obj->capacity;
-        obj->capacity+=STACK_SIZE_INCREMENT;
+        if (obj->base != original) {
+            free(original);
+            original = NULL;
+        }
+        obj->top = obj->base + obj->capacity;
+        obj->capacity += STACK_SIZE_INCREMENT;
     }
-    *obj->top=ele;
+    *obj->top = ele;
     obj->top++;
     return my_true;
 }

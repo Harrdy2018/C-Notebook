@@ -35,6 +35,7 @@ void test()
 ```
 * __attribute__((aligned)) 默认对齐方式
 ```c
+// 感觉像是 aligned(16) 16字节对齐
 struct student1{
     char name[7];
     int id;

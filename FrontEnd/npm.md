@@ -1,4 +1,4 @@
-## npm    nodeJS package management
+## npm ```nodeJS package management```
 
 ### 查看镜像源
 * npm config get registry

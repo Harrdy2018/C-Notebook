@@ -69,3 +69,23 @@ mysql> show databases;
 5 rows in set (0.00 sec)
 ```
 * ```drop database harrdy2018;``` 删除数据库
+* 建表格
+```sh
+mysql> create table student(
+    -> student_id int primary key,
+    -> name varchar(20),
+    -> major varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> describe student;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| student_id | int(11)     | NO   | PRI | NULL    |       |
+| name       | varchar(20) | YES  |     | NULL    |       |
+| major      | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> drop table student; # 删表
+```

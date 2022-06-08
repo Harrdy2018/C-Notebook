@@ -111,3 +111,32 @@ public class Solution {
     }
 }
 ```
+### 可缓存线程池
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+// newCachedThreadPool的线程池为无限大，当执行第二个任务时第一个任务已经完成，会复用执行第一个任务的线程，而不用每次新建线程.
+class TestRunnable implements Runnable{
+    private Integer index;
+
+    public TestRunnable(Integer index) {
+        this.index = index;
+    }
+
+    @Override
+    public void run() {
+        System.out.println(this.index+"我被执行了"+Thread.currentThread().getName());
+    }
+}
+
+public class Solution {
+    public static void main(String[] args){
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+        for(int i=1;i<=50;i++){
+            final int index = i;
+            cachedThreadPool.execute(new TestRunnable(index));
+        }
+        cachedThreadPool.shutdown();
+    }
+}
+```

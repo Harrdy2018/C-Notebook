@@ -133,3 +133,43 @@ public class TestThreadPool {
     }
 }
 ```
+```java
+package com;
+
+import java.util.concurrent.*;
+
+class Task implements Callable<Integer> {
+    private int startNum;
+
+    private int endNum;
+
+    public Task(int startNum, int endNum) {
+        this.startNum = startNum;
+        this.endNum = endNum;
+    }
+
+    @Override
+    public Integer call() {
+        int sum = 0;
+        for(int i=startNum;i<=endNum;i++){
+            sum+=i;
+        }
+        System.out.println(Thread.currentThread().getName()+" return "+sum);
+        return sum;
+    }
+}
+
+public class TestThreadPool {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService pool = Executors.newFixedThreadPool(3);
+        Future<Integer> futureTask1 = pool.submit(new Task(1,100));
+        Future<Integer> futureTask2 = pool.submit(new Task(1,100));
+        Future<Integer> futureTask3 = pool.submit(new Task(1,100));
+        Future<Integer> futureTask4 = pool.submit(new Task(1,100));
+        System.out.println(futureTask1.get());
+        System.out.println(futureTask2.get());
+        System.out.println(futureTask3.get());
+        System.out.println(futureTask4.get());
+    }
+}
+```

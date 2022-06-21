@@ -53,3 +53,119 @@ public class Test {
     }
 }
 ```
+#### 创建对象
+```sh
+# 如果是非public的构造器，需要打开权限(暴力反射),然后再创建对象
+constructor.setAccessible(true);
+```
+```java
+package com.cpdn;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+public class Test {
+    public static void main(String[] args){
+        Class c1 = Student.class;
+        try {
+            Constructor constructor = c1.getDeclaredConstructor(String.class, int.class);
+            // 把这一次的private权限打开
+            constructor.setAccessible(true);
+            Student s = (Student)constructor.newInstance("oppo", 12);
+            System.out.println(s.getName()+" "+s.getAge());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+##### 可变长参数列表
+```java
+package com.cpdn;
+
+public class Test {
+    public static void dealArray(int ...intArray){
+        for(int i : intArray){
+            System.out.print(i+" ");
+        }
+        System.out.print(System.lineSeparator());
+    }
+
+    public static void main(String[] args){
+        System.out.println("可变长参数");
+        dealArray(1,2,3,4,4,5);
+    }
+}
+```
+#### 获取成员变量并赋值和取值
+```java
+package com.cpdn;
+
+import java.lang.reflect.Field;
+
+public class Test {
+
+    public static void main(String[] args){
+        Class c1 = Student.class;
+        Field fields[]=c1.getDeclaredFields();
+        for(Field field : fields){
+            System.out.println(field.getName()+"===>"+field.getType());
+        }
+
+        try {
+            // 赋值
+            Student s = new Student();
+            Field fieldName = c1.getDeclaredField("name");
+            System.out.println(fieldName.getName()+"===>"+fieldName.getType());
+            fieldName.setAccessible(true);
+            fieldName.set(s, "oppo");
+
+            // 取值
+            System.out.println((String) fieldName.get(s));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+#### 获取方法对象
+```java
+package com.cpdn;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class Test {
+
+    public static void main(String[] args){
+        Class c1 = Student.class;
+        Method[] methods=c1.getDeclaredMethods();
+        for(Method m: methods){
+            System.out.println(m.getName()+"  "+m.getReturnType()+" "+m.getParameterCount());
+        }
+
+        try {
+            Method m = c1.getDeclaredMethod("setAge", int.class);
+            System.out.println(m.getName()+"  "+m.getReturnType()+" "+m.getParameterCount());
+
+            // 触发
+            Student s = new Student();
+            m.setAccessible(true);
+            m.invoke(s, 12);
+            System.out.println(s);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```

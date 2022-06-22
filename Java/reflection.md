@@ -169,3 +169,36 @@ public class Test {
     }
 }
 ```
+#### 反射作用
+* 可以在运行时得到一个类的全部成分然后操作
+* 可以破坏封装性
+* 也可以破坏泛型的约束性
+* 做Java高级框架
+```java
+package com.cpdn;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
+
+public class MybatisUtil {
+    public static void save(Object obj){
+        try {
+            PrintStream ps = new PrintStream(new FileOutputStream("data.txt", true));
+            Class c = obj.getClass();
+            ps.println("==================="+c.getSimpleName()+"=====================");
+            Field fileds[] = c.getDeclaredFields();
+            for(Field field : fileds){
+                String name = field.getName();
+                field.setAccessible(true);
+                String value = field.get(obj)+"";
+                ps.println(name+" "+value);
+            }
+            ps.close();
+        } catch (IllegalAccessException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```

@@ -1,4 +1,4 @@
-### curl ```https://blog.csdn.net/m0_37518413/article/details/120393534```
+### curl ```CommandLine Uniform Resource Locator```
 * curl - transfer a URL
 #### 命令
 * 默认发送get请求

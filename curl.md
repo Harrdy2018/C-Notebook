@@ -80,3 +80,31 @@ Access-Control-Allow-Credentials: true
   "url": "http://httpbin.org/get"
 }
 ```
+* ```-O, --remote-name   Write output to a file named as the remote file```
+```sh
+# 下载文件并以远程的文件名保存
+[root@ECS desktop]# curl --remote-name http://httpbin.org/image/jpeg
+```
+* ```-o, --output FILE   Write output to <file> instead of stdout```
+```sh
+# 下载文件并以指定的文件名保存
+curl --output new.jpeg http://httpbin.org/image/jpeg
+```
+* ```-H, --header LINE   Custom header to pass to server (H)```
+```sh
+# 设置头信息
+[root@ECS desktop]# curl --request GET --header "Name:Harrdy" --header "Age:18" http://httpbin.org/get
+{
+  "args": {},
+  "headers": {
+    "Accept": "*/*",
+    "Age": "18",
+    "Host": "httpbin.org",
+    "Name": "Harrdy",
+    "User-Agent": "curl/7.29.0",
+    "X-Amzn-Trace-Id": "Root=1-62d6c7df-704671e92abfa7ee23ee5d68"
+  },
+  "origin": "47.96.251.225",
+  "url": "http://httpbin.org/get"
+}
+```

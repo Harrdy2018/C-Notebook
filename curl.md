@@ -108,3 +108,7 @@ curl --output new.jpeg http://httpbin.org/image/jpeg
   "url": "http://httpbin.org/get"
 }
 ```
+```sh
+# 追踪重定向
+[root@ECS nginx]# curl --request GET --verbose --location http://127.0.0.1:80/last3
+```

@@ -45,3 +45,13 @@
 "(.*)"= "(.*)"\n
 $1,
 ```
+#### 列选择
+```sh
+{"name": "Harrdy", "age":123}
+{"name": "Harrdy", "age":123}
+{"name": "Harrdy", "age":123}
+{"name": "Harrdy", "age":123}
+{"name": "Harrdy", "age":123}
+
+# Alt+鼠标左键 鼠标左键用的时候最好点击一下
+```

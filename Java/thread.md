@@ -328,3 +328,88 @@ public class Solution {
     }
 }
 ```
+#### CountDownLatch
+* https://blog.csdn.net/wl_ang/article/details/104922464
+```java
+package net.biancheng.www;
+
+import java.util.concurrent.CountDownLatch;
+
+public class TestCountDownLatch {
+    private static CountDownLatch latch = new CountDownLatch(5);
+
+    public static class Task implements Runnable {
+        private Integer index;
+
+        public Task(Integer index) {
+            this.index = index;
+        }
+
+        @Override
+        public void run() {
+            if (index == 3){
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e){
+                    System.out.println(e);
+                }
+
+            }
+            System.out.println("player "+index+" done!");
+            latch.countDown();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("start ...");
+        for(int i=0;i<5;i++){
+            Task task = new Task(i);
+            Thread thread = new Thread(task);
+            thread.start();
+        }
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+        System.out.println("所有玩家准备完毕");
+    }
+}
+```
+#### CyclicBarrier
+```java
+package net.biancheng.www;
+
+import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
+public class TestCyclicBarrier {
+    private static CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
+
+    public static class Task implements Runnable {
+        @Override
+        public void run() {
+            for(int i=1;i<=3;i++){
+                Random rand = new Random();
+                int randomNum = rand.nextInt((3000-1000)+1)+1000;
+                try {
+                    Thread.sleep(randomNum);
+                    System.out.println(Thread.currentThread().getName()+" 翻过了 "+i+" 个障碍");
+                    cyclicBarrier.await();
+                } catch (InterruptedException | BrokenBarrierException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        for(int i=1;i<=5;i++){
+            new Thread(new Task(), "选手"+i).start();
+        }
+        System.out.println("end ...");
+    }
+}
+```

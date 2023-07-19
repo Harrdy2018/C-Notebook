@@ -128,3 +128,27 @@ tar -zcvf file.tar.gz file.txt
 解压缩+解包
 tar -zxvf file.tar.gz
 ```
+### ```vim```查看文件在内存中的样子
+```shell
+# cat data.txt
+123aAbB
+```
+#### 查看大小7字节
+![img.png](images/img.png)
+---
+![img.png](images/img2.png)
+#### ```vim```二进制打开
+![img.png](images/img3.png)
+---
+![img.png](images/img4.png)
+```shell
+# 可以看到 16进制(1字节)与文件内容对应关系
+31->1
+32->2
+33->3
+61->a
+41->A
+62->b
+42->B
+## 一共7字节
+```
